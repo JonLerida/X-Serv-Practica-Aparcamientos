@@ -30,3 +30,12 @@ class Comentario (models.Model):
     aparcamiento = models.ForeignKey(Aparcamiento, null=True)
     texto = models.TextField()
     fecha = models.DateTimeField()
+    def __str__(self):
+        return (self.texto+' '+self.usuario)
+
+class Pagina(models.Model):
+    usuario = models.ForeignKey(Usuario)
+    nombre = models.CharField(max_length=200)
+    enlace = models.CharField(max_length=200, default='')
+    def __str__(self):
+        return ('Pagina de ' + self.usuario.nick)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Usuario, Comentario, Aparcamiento
+from .models import Usuario, Comentario, Aparcamiento, Pagina
 # Register your models here.
 class UsuarioAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -30,14 +30,22 @@ class AparcamientoAdmin(admin.ModelAdmin):
         ('barrio', {'fields': ['barrio']}),
         ('distrito', {'fields': ['distrito']}),
         ('datos', {'fields': ['datos']}),
-
-
-
         #'classes': ['collapse']}),
     ]
     list_display = ('nombre', 'number', 'accesible', 'barrio')
 
 
+class PaginaAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('usuario', {'fields': ['usuario']}),
+        ('nombre', {'fields': ['nombre']}),
+        ('enlace', {'fields': ['enlace']}),
+        #'classes': ['collapse']}),
+    ]
+    list_display = ('usuario','nombre', 'enlace')
+
+
+admin.site.register(Pagina, PaginaAdmin)
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Comentario, ComentarioAdmin)
 admin.site.register(Aparcamiento, AparcamientoAdmin)
