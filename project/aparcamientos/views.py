@@ -26,10 +26,18 @@ Página about del sitio
 def About(request):
     return(HttpResponse('About'))
 
+
+"""
+Página con la info básica de todos los aparcamientos
+"""
+def InfoAparcamientos(request):
+    return(HttpResponse('Info de todos los aparcamientos'))
+
+
 """
 Página con la info de un determinado aparcamiento
 """
-def InfoAparcamiento(request, id):
+def InfoAparcamiento_id(request, id):
     return(HttpResponse('Info de un aparcamiento '+id))
 
 """

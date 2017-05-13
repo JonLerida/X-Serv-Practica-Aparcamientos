@@ -2,6 +2,11 @@ from django.db import models
 
 # Create your models here.
 
+class Estilo(models.Model):
+    usuario = models.ForeignKey('Usuario')
+    size = models.IntegerField()
+    color = models.CharField(max_length=10)
+
 
 class Usuario (models.Model):
     nick = models.CharField(max_length=200)

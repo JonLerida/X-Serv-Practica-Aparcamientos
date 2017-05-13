@@ -1,6 +1,17 @@
 from django.contrib import admin
-from .models import Usuario, Comentario, Aparcamiento, Pagina
+from .models import Usuario, Comentario, Aparcamiento, Pagina, Estilo
 # Register your models here.
+
+class EstiloAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('usuario', {'fields': ['usuario']}),
+        ('tamaño letra', {'fields': ['size']}),
+        ('color', {'fields': ['coor']}),
+        #'classes': ['collapse']}),
+    ]
+    list_display = ('usuario', 'size', 'color')
+
+
 class UsuarioAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Nick', {'fields': ['nick']}),
@@ -44,7 +55,7 @@ class PaginaAdmin(admin.ModelAdmin):
     ]
     list_display = ('usuario','nombre', 'enlace')
 
-
+admin.site.register(Estilo, EstiloAdmin)
 admin.site.register(Pagina, PaginaAdmin)
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Comentario, ComentarioAdmin)
