@@ -11,9 +11,14 @@ from django.template import loader
 """
 Página principal del sitio
 """
+@csrf_exempt
 def Principal(request):
-    return(HttpResponse('Principal'))
+    print("si")
+    template = loader.get_template('aparcamientos/index.html')
+    context = {
 
+        }
+    return HttpResponse(template.render(context, request))
 """
 Página de un usuario determinado
 """

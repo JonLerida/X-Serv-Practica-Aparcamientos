@@ -1,0 +1,196 @@
+html {
+    margin: 20;
+    padding: 0;
+}
+
+body{
+    font: 100% sans-serif, georgia;
+    margin: 0;
+    padding: 0;
+}
+img.banner{
+    width:50px;
+    height:50px;
+}
+img.banner:hover{
+    opacity: 1.0;
+    filter: alpha(opacity=100);
+}
+
+p {
+    font: 0.875em sans-serif;
+    margin-top: 0;
+    text-indent: 50px;  /* sangría de 50 pixeles*/
+}
+/*Headers*/
+h1, h2, h3, h4, h5{
+    color: #000560;
+}
+
+h1 {
+    font-size: 2.5 em;
+}
+
+h2 {
+    font-size: 1.875 em;
+}
+
+h3 {
+    font-size: 1.25 em;
+}
+/*Links*/
+a:link, a:visited{
+    background-color: #009900;
+    color: white;
+    padding: 14px 25px;
+    text-align: justify;center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover, a:active{
+    background-color: #BBBBBB;
+}
+
+/*Tablas */
+table, td, th {
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+tr:hover {background-color: #f5f5f5}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 15px;
+}
+th{
+    background-color:#4CAF50;
+    color:white;
+}
+
+/* Clases e identificadores*/
+.titleblock {
+    text-align:right;
+    height: 200px;
+    background-repeat: no-repeat;
+}
+/* Formulario*/
+input[type=text], select {
+    width: auto;
+    padding: 5px 5px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+input[type=password], select {
+    width: auto;
+    padding: 5px 5px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+button[type=submit] {
+    background-color: #000000;
+    color: white;
+    padding: 0.5em;
+    margin: 8px 0;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+button[type=submit]:hover {
+    background-color: #45a049;
+}
+
+#login_form{
+    position: relative;
+    top: 3%;
+    right: 3%;
+    text-align: right;
+    display: block;
+    font-size: 0.75em;
+    font
+}
+.container {
+    margin:0 auto 0 auto;
+    padding:0; width:100%;
+    color:white;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+}
+
+.navbar{
+    color: #123456;
+    font-size: 1em; /* para identificarla*/
+    display: inline-block;
+}
+
+ul.navbar{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: auto;
+    position: left;
+}
+
+/* Lista horizontal*/
+ul.list_horizontal {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+ul.list_horizontal li {
+    float: left;
+}
+
+ul.list_horizontal li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+ul.list_horizontal li a:hover {
+    background-color: #111;
+}
+
+/* Lista Vertical*/
+ul.list_vertical{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+ul.list_vertical li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+ul.list_vertical li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+ul.list_vertical li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
