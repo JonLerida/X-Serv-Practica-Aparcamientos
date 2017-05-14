@@ -4,8 +4,8 @@ from django.db import models
 
 class Estilo(models.Model):
     usuario = models.ForeignKey('Usuario')
-    size = models.IntegerField()
-    color = models.CharField(max_length=10)
+    size = models.IntegerField(default='1')
+    color = models.CharField(max_length=20, default='black')
 
 
 class Usuario (models.Model):

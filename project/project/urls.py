@@ -14,6 +14,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth.views import login
 
 urlpatterns = [
     # /
@@ -29,7 +30,7 @@ urlpatterns = [
     # Admin site
     url(r'^admin/', include(admin.site.urls)),
     # cadena de letras mayúsculas o minúsculas, no vacía. Es decir, un usuario
-    url(r'^([a-zA-Z]+)$', "aparcamientos.views.Profile", name='Profile'),    
+    url(r'^([a-zA-Z]+)$', "aparcamientos.views.Profile", name='Profile'),
     # No match
     url(r'^.*$', "aparcamientos.views.NoMatch", name='NoMatch'),
 ]
