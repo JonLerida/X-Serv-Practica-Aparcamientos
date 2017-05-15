@@ -6,6 +6,7 @@
 <title>Aparcamientos</title>
 <link rel="shortcut icon" href='{% static "aparcamientos/images/icono.ico" %}'/>
 <head>
+{% block redireccion %}{% endblock redireccion%}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -33,6 +34,7 @@
     <a href='admin/logout/'><button>Salir</button></a><br>
 {% else %}
     <form id="login_form" action="/login" method ="POST">
+        {% csrf_token %}
         <label for="nick"> Nick</label>
         <input type="text" name="nick">
         <label for="password">Contraseña</label>
@@ -43,19 +45,13 @@
 
 
 <!-- Lista horizontal-->
-<ul class="list_horizontal">
-  <li><a class="active" href="/">Principal</a></li>
-  <li><a href="/aparcamientos">Aparcamientos</a></li>
-  <li><a href="/xml">XML</a></li>
-  <li style="float:right"><a href="/about">About</a></li>
-</ul>
-<br>
+{% block lista_horizontal %}{% endblock lista_horizontal %}
+
 <!--Lisa Vertical-->
 <ul class="list_vertical">
-  <li><a href="/leri">Página de Usuario1</a></li>
-  <li><a href="/lll">Página de Usuario1</a></li>
-  <li><a href="/lll">Página de Usuario1</a></li>
-  <li><a href="#about">Página de Usuario1</a></li>
+    {% for user in pagina_list %}
+    <li><a href="/{{user.usuario}}">{{user.nombre}}</a></li>
+    {% endfor %}
 </ul>
 
 {% block texto_central %} {% endblock texto_central %}

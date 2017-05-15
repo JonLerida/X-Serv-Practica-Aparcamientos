@@ -4,13 +4,22 @@
 {% block title %} Bienvenido {% endblock title %}
 {% block title2 %}Encuentra todos los aparcamientos de Madrid{% endblock title2 %}
 
+{% block lista_horizontal %}
+<ul class="list_horizontal">
+  <li><a class="active" href="/">Inicio</a></li>
+  <li><a href="/aparcamientos">Aparcamientos</a></li>
+  <li style="float:right"><a href="/about">About</a></li>
+</ul>
+<br>
+{% endblock lista_horizontal %}
+
 
 {% block texto_central %}
 <h3> Aparcamientos con más comentarios:</h3>
 <ul id="top_aparcamientos">
     {% for park in top_aparcamientos %}
-    <li><a class="enlace_discreto" href="{{park.url}}">{{park.nombre}}: </a>
-    <span class="sangrado">Dirección: {{park.distrito}}, {{park.barrio}}</span><span><a class="enlace_decorado" href="/aparcamientos/{{park.number}}"> + Info</a></span>
+    <li><a class="enlace_discreto" href="{{park.url}}">{{park.nombre}}</a>
+    <span class="sangrado">Dirección: {{park.distrito}}, {{park.barrio}}</span>&nbsp<span><a class="enlace_decorado" href="/aparcamientos/{{park.number}}"> + Info</a></span>
     </li>
     {% endfor %}
 </ul>

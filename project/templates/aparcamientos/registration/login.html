@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %} Aparcamientos {% endblock title%}
+{% block title2 %}
+    {% if login_success %}
+        Has entrado correctamente
+    {% else %}
+        No has entrado
+    {% endif %}
+{% endblock title2 %}
+Esto se escribe igualmente

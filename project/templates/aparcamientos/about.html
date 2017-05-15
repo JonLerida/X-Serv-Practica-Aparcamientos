@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+Información de la página web
+{% endblock title %}
+
+{%block lista_horizontal %}
+<ul class="list_horizontal">
+  <li><a href="/">Inicio</a></li>
+  <li><a href="/aparcamientos">Aparcamientos</a></li>
+  <li style="float:right"><a  class="active" href="/about">About</a></li>
+</ul>
+<br>
+{% endblock lista_horizontal %}
+
+
+
+
+{% block texto_central %}
+Autor de la Práctica: Jon Lérida García <br>
+Ingeniería en Sistemas de Telecomunicaciones <br>
+Universidad Rey Juan Carlos
+{% endblock texto_central %}
