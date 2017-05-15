@@ -5,6 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sites.models import Site
 import urllib
 from django.template import loader
+from .models import Estilo as EstiloMod
+from .models import Usuario as UsuarioMod
+from .models import Aparcamiento as AparcamientoMod
+from .models import Comentario as ComentarioMod
+from .models import Pagina as PaginaMod
 # Create your views here.
 
 
@@ -13,12 +18,31 @@ Página principal del sitio
 """
 @csrf_exempt
 def Principal(request):
-    print("si")
-    template = loader.get_template('aparcamientos/index.html')
+    template = loader.get_template('index.html')
+    top_aparcamientos = AparcamientoMod.objects.all()
     context = {
-
+        'top_aparcamientos': top_aparcamientos,
         }
     return HttpResponse(template.render(context, request))
+
+"""
+Cuando recibo un LOGIN
+"""
+@csrf_exempt
+def Login(request):
+    template = loader.get_template('login.html')
+    if request.method == 'POST':
+        respuesta = 'Es post'
+    else:
+        context = {
+
+        }
+
+    return HttpResponse(respuesta)
+
+
+
+
 """
 Página de un usuario determinado
 """

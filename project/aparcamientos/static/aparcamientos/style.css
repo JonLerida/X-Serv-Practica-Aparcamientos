@@ -45,19 +45,7 @@ h2 {
 h3 {
     font-size: 1.25 em;
 }
-/*Links*/
-a:link, a:visited{
-    background-color: #009900;
-    color: white;
-    padding: 14px 25px;
-    text-align: justify;center;
-    text-decoration: none;
-    display: inline-block;
-}
 
-a:hover, a:active{
-    background-color: #BBBBBB;
-}
 
 /*Tablas */
 table, td, th {
@@ -81,10 +69,32 @@ th{
 
 /* Clases e identificadores*/
 
-/* Mensaje en la esquina superior derecha*/
+/* Aparcamientos más comentados*/
+#top_aparcamientos{
+    list-style-type: none;
+    margin: 0px 20px 50px 0px;
+    display: block;
+    color: #000;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+/* Lista discreta: sin cosas raras*/
+.enlace_discreto{
+    text-align: justify;center;
+    padding: inherit;
+    text-decoration: none;
+    display: inline-block;
+}
+a:hover.enlace_discreto{
+    color: red;
+    background-position: black;
+}
+
+/* Mensaje abajo de la página*/
 div.piepagina{
-    position:relative;
-    bottom:0%;
+    position: relative;
+    bottom: 0;
     border: 1px solid green;
     background-color: lightgrey;
 }
@@ -94,17 +104,18 @@ div.piepagina{
 a.piepagina{
     padding: 0px 10px;
     background-color: #009900;
-    color: white;
-    text-align: justify;center;
+    color: #000;
+    text-align: justify;
     text-decoration: none;
     text-align: center;
-    position: relative;
-    left: 40%;
+    display: inline-block;
 }
 
 .piepagina a:hover, .piepagina a:active{
-    background-color: #BBBBBB;
+    background-color: #111;
+    color: white;
 }
+/* Mensaje en la esquina superior derecha*/
 .corner_message{
     position: relative;
     top :3%;
@@ -177,7 +188,13 @@ ul.navbar{
     overflow: auto;
     position: left;
 }
+                /*
 
+
+                LISTAS
+
+
+                */
 /* Lista horizontal*/
 ul.list_horizontal {
     list-style-type: none;
@@ -185,6 +202,20 @@ ul.list_horizontal {
     padding: 0;
     overflow: hidden;
     background-color: #333;
+}
+
+                                                        /*Links dentro de una lista*/
+
+
+ul.list_horizontal a:hover, ul.list_horizontal a:active{
+    background-color: #BBBBBB;
+}
+ul.list_horizontal a:link, ul.list_horizontal a:visited{
+    background-color: #009900;
+    padding: 14px 25px;
+    text-align: justify;center;
+    text-decoration: none;
+    display: inline-block;
 }
 
 ul.list_horizontal li {
@@ -210,13 +241,23 @@ ul.list_horizontal li a:hover {
 
 /* Lista Vertical*/
 ul.list_vertical{
+    float: left;
     list-style-type: none;
-    margin: 0;
+    margin: 0px 20px 50px 0px;
     padding: 0;
     background-color: #f1f1f1;
     /*position: fixed;*/
-    height: 100%;
     overflow: auto;
+}
+ul.list_vertical a:hover, ul.list_vertical a:active{
+    background-color: #BBBBBB;
+}
+ul.list_vertical a:link, ul.list_vertical a:visited{
+    background-color: #009900;
+    padding: 14px 25px;
+    text-align: justify;
+    text-decoration: none;
+    display: inline-block;
 }
 
 ul.list_vertical li a {
@@ -234,3 +275,15 @@ ul.list_vertical li a.active {
 ul.list_vertical li a:hover:not(.active) {
     background-color: #111;
     color: white;
+}
+
+a.enlace_decorado{
+    background-color: #009900;
+
+}
+
+/* este no funciona*/
+.sangrado {
+    background-color: none;
+    text-align: justify;
+}

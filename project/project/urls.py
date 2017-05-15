@@ -21,8 +21,10 @@ urlpatterns = [
     url(r'^$', "aparcamientos.views.Principal", name='Principal'),
     #página about
     url(r'^about$', "aparcamientos.views.About", name='About'),
+    #Login
+    url(r'^login$', "aparcamientos.views.Login", name='Login de un usuario'),
     #/aparcamientos
-    url(r'^aparcamientos/$', "aparcamientos.views.InfoAparcamientos", name='InfoAparcamiento'),
+    url(r'^aparcamientos$', "aparcamientos.views.InfoAparcamientos", name='InfoAparcamiento'),
     #aparcamiento/id
     url(r'^aparcamientos/([0-9]+)$', "aparcamientos.views.InfoAparcamiento_id", name='InfoAparcamiento'),
     #usuario/xml

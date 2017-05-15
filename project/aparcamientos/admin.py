@@ -34,6 +34,7 @@ class AparcamientoAdmin(admin.ModelAdmin):
     fieldsets = [
         ('nombre', {'fields': ['nombre']}),
         ('Number', {'fields': ['number']}),
+        ('URL', {'fields': ['url']}),
         ('descripcion', {'fields': ['descripcion']}),
         ('accesible', {'fields': ['accesible']}),
         ('latitud', {'fields': ['latitud']}),
@@ -43,7 +44,7 @@ class AparcamientoAdmin(admin.ModelAdmin):
         ('datos', {'fields': ['datos']}),
         #'classes': ['collapse']}),
     ]
-    list_display = ('nombre', 'number', 'accesible', 'barrio')
+    list_display = ('nombre', 'number', 'url', 'accesible', 'barrio')
 
 
 class PaginaAdmin(admin.ModelAdmin):
