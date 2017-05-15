@@ -19,6 +19,7 @@ class Aparcamiento (models.Model):
     #number == id, no me deja django llamarlo id creo
     number = models.CharField(max_length = 5)
     nombre = models.CharField(max_length=200)
+    url = models.CharField(max_length=200, default='')
     descripcion = models.TextField()
     accesible = models.CharField(max_length=1)
     latitud = models.CharField(max_length=200)
@@ -40,7 +41,7 @@ class Comentario (models.Model):
 
 class Pagina(models.Model):
     usuario = models.ForeignKey(Usuario)
-    nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200, default='')
     enlace = models.CharField(max_length=200, default='')
     def __str__(self):
         return ('Pagina de ' + self.usuario.nick)
