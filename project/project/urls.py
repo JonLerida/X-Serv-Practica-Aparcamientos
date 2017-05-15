@@ -32,7 +32,7 @@ urlpatterns = [
     # Admin site
     url(r'^admin/', include(admin.site.urls)),
     # cadena de letras mayúsculas o minúsculas, no vacía. Es decir, un usuario
-    url(r'^([a-zA-Z]+)$', "aparcamientos.views.Profile", name='Profile'),
+    url(r'^([a-zA-Z]+[0-9]*)$', "aparcamientos.views.Profile", name='Profile'),
     # No match
     url(r'^.*$', "aparcamientos.views.NoMatch", name='NoMatch'),
 ]
