@@ -16,26 +16,28 @@ class Guardado(models.Model):
         return str(self.id)
 
 class Usuario (models.Model):
-    nick = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
+    nick = models.CharField(max_length=200, blank = True)
+    password = models.CharField(max_length=200, blank = True)
     aparcamientos = models.ManyToManyField('Aparcamiento')
     def __str__(self):
         return self.nick
 
 class Aparcamiento (models.Model):
     #number == id, no me deja django llamarlo id creo
-    number = models.CharField(max_length = 5)
-    nombre = models.CharField(max_length=200)
-    url = models.CharField(max_length=200, default='')
-    descripcion = models.TextField()
-    accesible = models.CharField(max_length=1)
-    latitud = models.CharField(max_length=200)
-    longitud = models.CharField(max_length=200)
-    provincia = models.CharField(max_length=30, default='')
-    codigo_postal = models.CharField(max_length = 10, default='')
-    barrio = models.CharField(max_length=200, default='')
-    distrito = models.CharField(max_length=200, default='')
-    datos = models.CharField(max_length=200)
+    number = models.CharField(max_length = 5, default='')
+    nombre = models.CharField(max_length=200, default='')
+    descripcion = models.TextField(default = '', blank = True)
+    accesible = models.CharField(max_length=1, default='', blank=True)
+    url = models.CharField(max_length=200, default='', blank = True)
+    via = models.CharField(max_length=100, default='', blank=True)
+    localidad = models.CharField(max_length=100, default='', blank=True)
+    provincia = models.CharField(max_length=30, default='', blank = True)
+    codigo_postal = models.CharField(max_length = 10, default='', blank = True)
+    barrio = models.CharField(max_length=200, default='', blank = True)
+    distrito = models.CharField(max_length=200, default='', blank = True)
+    latitud = models.CharField(max_length=200, default='', blank = True)
+    longitud = models.CharField(max_length=200, default='',blank = True)
+    datos = models.CharField(max_length=200, default='', blank = True)
 
     def __str__(self):
         return (self.number+'  '+self.nombre)

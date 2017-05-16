@@ -42,19 +42,21 @@ class AparcamientoAdmin(admin.ModelAdmin):
     fieldsets = [
         ('nombre', {'fields': ['nombre']}),
         ('Number', {'fields': ['number']}),
-        ('URL', {'fields': ['url']}),
         ('descripcion', {'fields': ['descripcion']}),
         ('accesible', {'fields': ['accesible']}),
-        ('latitud', {'fields': ['latitud']}),
-        ('longitud', {'fields': ['longitud']}),
+        ('URL', {'fields': ['url']}),
+        ('via', {'fields': ['via']}),
+        ('localidad', {'fields': ['localidad']}),
         ('provincia', {'fields': ['provincia']}),
+        ('codigo_postal', {'fields': ['codigo_postal']}),
         ('barrio', {'fields': ['barrio']}),
         ('distrito', {'fields': ['distrito']}),
-        ('codigo_postal', {'fields': ['codigo_postal']}),
+        ('latitud', {'fields': ['latitud']}),
+        ('longitud', {'fields': ['longitud']}),
         ('datos', {'fields': ['datos']}),
         #'classes': ['collapse']}),
     ]
-    list_display = ('number', 'nombre', 'provincia', 'distrito', 'accesible', 'barrio')
+    list_display = ('number', 'nombre', 'distrito', 'localidad', 'accesible', 'barrio')
 
 
 class PaginaAdmin(admin.ModelAdmin):
