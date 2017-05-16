@@ -13,15 +13,14 @@
 <img class="banner" src='{% static "aparcamientos/images/banner.jpg" %}' alt="banner">
 
 <!--dimensiones originales de la foto son 1400x900, factor de 1.42-->
-    <!--Para que pueda cambiar estas el usuario
+{% if user_color %}
 <style>
   body{
-    background-color: {{ color }}
+    color: {{ user_color }};
+    font-size: {{user_size}}em;
   }
-  body{
-    font-size: {{size}}
-  }
-</style>-->
+</style>
+{% endif %}
 <!-- Formulario de Login-->
 
 <h1>{%block title %}{% endblock title %}</h1>

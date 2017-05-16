@@ -68,10 +68,33 @@ def Login(request):
 
 """
 Página de un usuario determinado: mostrar aparcamientos seleccionados por ese usuario, de 5 en 5
+Comprobar si el usuario existe. Si existe, comprobar si tiene un estilo asociado. Si lo tiene, devolverle el estilo. Si no, le ponemos el
+estandar (negro,1em)
 """
 def Profile(request, usuario):
-    usuario_object = UsuarioMod.objects.get(nick=usuario)
-    return(HttpResponse('Perfil de '+ usuario))
+    template = loader.get_template("perfil.html")
+    try:
+        usuario_object = UsuarioMod.objects.get(nick=usuario)
+        try:
+            estilo_object = EstiloMod.objects.get(usuario__nick=usuario)
+            context = {
+                'user_nick' : usuario_object.nick,
+                'user_color': estilo_object.color,
+                'user_size': estilo_object.size,
+            }
+        except EstiloMod.DoesNotExist:
+            context = {
+                'user_nick' : usuario_object.nick,
+                'user_color': 'black',
+                'user_size': '1',
+            }
+        # Aquí tengo que mandar los aparcamientos del usuaruo de 5 en 5
+    except UsuarioMod.DoesNotExist:
+        context = {
+            'DoesNotExist': True,
+        }
+
+    return HttpResponse(template.render(context, request))
 
 """
 Página about del sitio
@@ -102,7 +125,7 @@ def InfoAparcamiento_id(request, id):
     print(id)
     template = loader.get_template("aparcamiento_id.html")
     context = {
-        'aparcamiento_id:': id,
+        'aparcamiento_id': id,
     }
     return HttpResponse(template.render(context, request))
 

@@ -6,6 +6,8 @@ class Estilo(models.Model):
     usuario = models.ForeignKey('Usuario')
     size = models.IntegerField(default='1')
     color = models.CharField(max_length=20, default='black')
+    def __str__(self):
+        return self.usuario
 
 
 class Usuario (models.Model):

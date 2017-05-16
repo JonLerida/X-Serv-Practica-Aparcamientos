@@ -6,7 +6,7 @@ class EstiloAdmin(admin.ModelAdmin):
     fieldsets = [
         ('usuario', {'fields': ['usuario']}),
         ('tamaño letra', {'fields': ['size']}),
-        ('color', {'fields': ['coor']}),
+        ('color', {'fields': ['color']}),
         #'classes': ['collapse']}),
     ]
     list_display = ('usuario', 'size', 'color')

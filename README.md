@@ -7,3 +7,5 @@ API REST: ok
 -Logout?
 -XML, RSS?
 -Plantillas?
+
+Estilo de cada usuario metido ya 

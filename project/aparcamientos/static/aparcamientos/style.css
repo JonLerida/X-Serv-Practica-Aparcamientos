@@ -100,6 +100,7 @@ div.piepagina{
 }
 .piepagina p{
     text-align: center;
+    color: black;
 }
 a.piepagina{
     padding: 0px 10px;
@@ -164,7 +165,10 @@ button[type=submit]:hover {
     text-align: right;
     display: block;
     font-size: 0.75em;
-    font
+}
+
+#login_form label {
+    color: black;
 }
 .container {
     margin:0 auto 0 auto;
@@ -257,7 +261,6 @@ ul.list_vertical a:link, ul.list_vertical a:visited{
     padding: 14px 25px;
     text-align: justify;
     text-decoration: none;
-    display: inline-block;
 }
 
 ul.list_vertical li a {
@@ -278,8 +281,13 @@ ul.list_vertical li a:hover:not(.active) {
 }
 
 a.enlace_decorado{
-    background-color: #009900;
-
+    background-color: white;
+    color: black;
+    text-decoration: none;
+}
+a.enlace_decorado:hover{
+    background-color: #111;
+    color: white;
 }
 
 /* este no funciona*/
