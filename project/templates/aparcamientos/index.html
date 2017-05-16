@@ -16,6 +16,7 @@
 
 {% block texto_central %}
 <h3> Aparcamientos con más comentarios:</h3>
+<div id="texto_central">
 <ul id="top_aparcamientos">
     {% for park in top_aparcamientos %}
     <li><a class="enlace_decorado" href="{{park.url}}">{{park.nombre}}</a>
@@ -23,4 +24,5 @@
     </li>
     {% endfor %}
 </ul>
+</div>
 {% endblock texto_central %}

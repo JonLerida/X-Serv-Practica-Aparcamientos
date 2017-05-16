@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.auth.views import login
 
 urlpatterns = [
+    url(r'^prueba$', "aparcamientos.views.Prueba", name='Principal'),
     # /
     url(r'^$', "aparcamientos.views.Principal", name='Principal'),
     #página about

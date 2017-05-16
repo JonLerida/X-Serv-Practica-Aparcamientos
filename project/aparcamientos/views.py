@@ -5,13 +5,105 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sites.models import Site
 import urllib
 from django.template import loader
+import xml.sax
 from .models import Estilo as EstiloMod
 from .models import Usuario as UsuarioMod
 from .models import Aparcamiento as AparcamientoMod
 from .models import Comentario as ComentarioMod
 from .models import Pagina as PaginaMod
 from .models import Guardado as GuardadoMod
-# Create your views here.
+# Parseadores
+from xml.sax.handler import ContentHandler
+import xml.sax
+import xml.parsers.expat
+import xml.sax
+import urllib
+
+import xmltodict
+
+
+def Prueba(request):
+    file = urllib.request.urlopen('http://datos.munimadrid.es/portal/site/egob/menuitem.ac61933d6ee3c31cae77ae7784f1a5a0/?vgnextoid=00149033f2201410VgnVCM100000171f5a0aRCRD&format=xml&file=0&filename=202584-0-aparcamientos-residentes&mgmtid=e84276ac109d3410VgnVCM2000000c205a0aRCRD&preview=full')
+    data = file.read()
+    data = xmltodict.parse(data)
+    """
+    Listas de los datos parseados del fichero XML:
+    De los índices 0-4 de 'atributo'--> datos generales del aparcamiento
+    Para el índice 5, hay que volver a indexar la lista--> atributo
+    #text--> valor del campo
+    @name --> nombre del campo
+    """
+    id_parsed_list = []
+    nombre_parsed_list = []
+    descripcion_parsed_list = []
+    accesibilidad_parsed_list = []
+    url_parsed_list = []
+    via_parsed_list = []
+    localidad_parsed_list = []
+    provincia_parsed_list = []
+    codigo_parsed_list = []
+    barrio_parsed_list = []
+    distrito_parsed_list = []
+    latitud_parsed_list = []
+    longitud_parsed_list = []
+
+    for indexPark, _ in enumerate(data['Contenidos']['contenido'][0:10], 0):
+        # indices del 0-4: datos generales en contenidos-contenido-atributos-atributo
+        id_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][0]['#text'])
+        nombre_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][1]['#text'])
+        descripcion_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][2]['#text'])
+        accesibilidad_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][3]['#text'])
+        url_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][4]['#text'])
+        # indices del 5 en adelante, datos de localizacion
+        via_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][0]['#text'])
+        localidad_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][4]['#text'])
+        provincia_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][5]['#text'])
+        codigo_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][6]['#text'])
+        barrio_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][7]['#text'])
+        distrito_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][8]['#text'])
+        latitud_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][-2]['#text'])
+        longitud_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][-1]['#text'])
+        print(indexPark)
+
+
+
+    for index, _ in enumerate(id_parsed_list):
+        number = id_parsed_list[index]
+        nombre = nombre_parsed_list[index]
+        descripcion = descripcion_parsed_list[index]
+        accesible = accesibilidad_parsed_list[index]
+        url = url_parsed_list[index]
+        via = via_parsed_list[index]
+        localidad = localidad_parsed_list[index]
+        provincia = provincia_parsed_list[index]
+        cp = codigo_parsed_list[index]
+        barrio = barrio_parsed_list[index]
+        distrito = distrito_parsed_list[index]
+        latitud = latitud_parsed_list[index]
+        longitud = longitud_parsed_list[index]
+        #guardamos
+        new = AparcamientoMod(
+            number= number,
+            nombre = nombre,
+            descripcion = descripcion,
+            accesible=accesible,
+            url=url,
+            localidad=localidad,
+            provincia=provincia,
+            codigo_postal = cp,
+            barrio = barrio,
+            distrito = distrito,
+            latitud = latitud,
+            longitud = longitud,
+        )
+        new.save()
+
+
+    return HttpResponse(data['Contenidos']['contenido'][9]['atributos']['atributo'][5]['atributo'][-1]['#text'])
+
+
+
+
 
 
 """
