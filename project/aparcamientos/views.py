@@ -10,6 +10,7 @@ from .models import Usuario as UsuarioMod
 from .models import Aparcamiento as AparcamientoMod
 from .models import Comentario as ComentarioMod
 from .models import Pagina as PaginaMod
+from .models import Guardado as GuardadoMod
 # Create your views here.
 
 
@@ -23,7 +24,7 @@ def Principal(request):
         template = loader.get_template('index.html')
 
         top_aparcamientos = AparcamientoMod.objects.all()
-        top_aparcamientos = ComentarioMod.objects.all().order_by('-aparcamiento__id').unique()[:5]
+        #top_aparcamientos = ComentarioMod.objects.all().order_by('-aparcamiento__id').unique()[:5]
         pagina_list = PaginaMod.objects.all()
         context = {
             'top_aparcamientos': top_aparcamientos,
@@ -79,10 +80,12 @@ def Profile(request, usuario):
         usuario_object = UsuarioMod.objects.get(nick=usuario)
         try:
             estilo_object = EstiloMod.objects.get(usuario__nick=usuario)
+            guardado_object = GuardadoMod.objects.filter(usuario__nick = usuario)[:5]
             context = {
                 'user_nick' : usuario_object.nick,
                 'user_color': estilo_object.color,
                 'user_size': estilo_object.size,
+                'guardados': guardado_object,
             }
         except EstiloMod.DoesNotExist:
             context = {

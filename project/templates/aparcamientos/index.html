@@ -18,7 +18,7 @@
 <h3> Aparcamientos con más comentarios:</h3>
 <ul id="top_aparcamientos">
     {% for park in top_aparcamientos %}
-    <li><a class="enlace_discreto" href="{{park.url}}">{{park.nombre}}</a>
+    <li><a class="enlace_decorado" href="{{park.url}}">{{park.nombre}}</a>
     <span class="sangrado">Dirección: {{park.distrito}}, {{park.barrio}}</span>&nbsp<span><a class="enlace_decorado" href="/aparcamientos/{{park.number}}"> + Info</a></span>
     </li>
     {% endfor %}

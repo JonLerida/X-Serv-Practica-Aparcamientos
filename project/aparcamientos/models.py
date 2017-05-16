@@ -8,7 +8,12 @@ class Estilo(models.Model):
     color = models.CharField(max_length=20, default='black')
     def __str__(self):
         return self.usuario
-
+class Guardado(models.Model):
+    usuario = models.ForeignKey('Usuario')
+    aparcamiento = models.ForeignKey('Aparcamiento')
+    fecha = models.DateTimeField()
+    def __str__(self):
+        return str(self.id)
 
 class Usuario (models.Model):
     nick = models.CharField(max_length=200)
