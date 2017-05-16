@@ -108,13 +108,24 @@ def About(request):
 
 
 """
-Página con la info básica de todos los aparcamientos
+Página con la info básica de todos los aparcamientos. Si el método es GET, devuelvo todos los aparcamientos. Si es POST, filtro el distrito
 """
 def InfoAparcamientos(request):
     template = loader.get_template("aparcamientos.html")
-    context = {
-
-    }
+    if request.method == 'GET':
+        aparcamiento_object = AparcamientoMod.objects.all()
+        context = {
+            'aparcamientos': aparcamiento_object,
+        }
+    elif request.method == 'POST':
+        distrito = request.POST['distrito']
+        if distrito =='':
+            aparcamiento_object = AparcamientoMod.objects.all()
+        else:
+            aparcamiento_object = AparcamientoMod.objects.filter(distrito=distrito)
+        context = {
+            'aparcamientos': aparcamiento_object,
+        }
     return HttpResponse(template.render(context, request))
 
 
@@ -124,9 +135,16 @@ Página con la info de un determinado aparcamiento
 def InfoAparcamiento_id(request, id):
     print(id)
     template = loader.get_template("aparcamiento_id.html")
-    context = {
-        'aparcamiento_id': id,
-    }
+    try:
+        aparcamiento_object = AparcamientoMod.objects.get(number=id)
+        context = {
+            'aparcamiento_id': id,
+            'aparcamiento':aparcamiento_object,
+        }
+    except AparcamientoMod.DoesNotExist:
+        context = {
+            'DoesNotExist': True,
+        }
     return HttpResponse(template.render(context, request))
 
 """

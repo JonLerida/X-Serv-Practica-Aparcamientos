@@ -26,8 +26,10 @@ class Aparcamiento (models.Model):
     accesible = models.CharField(max_length=1)
     latitud = models.CharField(max_length=200)
     longitud = models.CharField(max_length=200)
-    barrio = models.CharField(max_length=200)
-    distrito = models.CharField(max_length=200)
+    provincia = models.CharField(max_length=30, default='')
+    codigo_postal = models.CharField(max_length = 10, default='')
+    barrio = models.CharField(max_length=200, default='')
+    distrito = models.CharField(max_length=200, default='')
     datos = models.CharField(max_length=200)
 
     def __str__(self):

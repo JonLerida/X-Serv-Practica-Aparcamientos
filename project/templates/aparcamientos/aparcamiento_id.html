@@ -2,8 +2,11 @@
 
 
 {% block title%}
+{% if not DoesNotExist %}
 Información del aparcamiento {{aparcamiento_id}}
-
+{% else %}
+El Aparcamiento solicitado no existe
+{% endif %}
 {% endblock title %}
 
 
@@ -17,5 +20,22 @@ Información del aparcamiento {{aparcamiento_id}}
 {% endblock lista_horizontal %}
 
 {% block texto_central %}
-Aquí va información del aparcamiento, lo mas detallada posible. extraida del xml
+{% if not DoesNotExist %}
+<div id = "info_aparcamiento">
+    <ul>
+        <li><strong>Nombre:</strong> <span>{{aparcamiento.nombre}}</span></li>
+        <li><strong>Provincia:</strong> <span>{{aparcamiento.provincia}}</span></li>
+        <li> <strong>Barrio:</strong> <span>{{aparcamiento.barrio}}</span></li>
+        <li><strong>Distrito:</strong> <span>{{aparcamiento.distrito}}</span></li>
+        {% if aparcamiento.accesibilidad == '1' %}
+            <li><strong>Accesible:</strong> <span>Si</span></li>
+        {% else %}
+            <li><strong>Accesible:</strong> <span>No</span></li>
+        {% endif %}
+        <li><strong>Código Postal:</strong> <span>{{aparcamiento.codigo_postal}}</span></li>
+        <li><strong>Latitud:</strong> <span>{{aparcamiento.latitud}}</span></li>
+        <li><strong>Longitud: </strong> <span>{{aparcamiento.longitud}}</span></li>
+    </ul>
+</div>
+{% endif %}
  {% endblock texto_central %}

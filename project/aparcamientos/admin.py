@@ -39,12 +39,14 @@ class AparcamientoAdmin(admin.ModelAdmin):
         ('accesible', {'fields': ['accesible']}),
         ('latitud', {'fields': ['latitud']}),
         ('longitud', {'fields': ['longitud']}),
+        ('provincia', {'fields': ['provincia']}),
         ('barrio', {'fields': ['barrio']}),
         ('distrito', {'fields': ['distrito']}),
+        ('codigo_postal', {'fields': ['codigo_postal']}),
         ('datos', {'fields': ['datos']}),
         #'classes': ['collapse']}),
     ]
-    list_display = ('nombre', 'number', 'url', 'accesible', 'barrio')
+    list_display = ('number', 'nombre', 'provincia', 'distrito', 'accesible', 'barrio')
 
 
 class PaginaAdmin(admin.ModelAdmin):

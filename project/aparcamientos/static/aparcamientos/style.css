@@ -290,8 +290,37 @@ a.enlace_decorado:hover{
     color: white;
 }
 
-/* este no funciona*/
 .sangrado {
     background-color: none;
     text-align: justify;
+}
+
+
+#about{
+    font-size: 1.05em;
+    display: inline-block;
+    margin : auto;
+    background-color: none;
+}
+
+#info_aparcamiento{
+    display: inline-block;
+    color: black;
+}
+
+#info_aparcamiento ul{
+    padding: 0;
+    list-style-type: none;
+    margin: 0px 20px 50px 0px;
+    padding: 0;
+}
+
+div#info_aparcamiento_pequeña{
+    display: inline-block;
+    margin: 0px 20px 50px 0px;
+    padding: 0;
+}
+
+#info_aparcamiento_pequeña li{
+    list-style: none;
 }

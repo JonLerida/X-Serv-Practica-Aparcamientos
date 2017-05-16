@@ -4,7 +4,7 @@
 {% block title %}
 Info de todos los aparcamientos
 {% endblock title %}
-
+ffff
 
 {%block lista_horizontal %}
 <ul class="list_horizontal">
@@ -13,4 +13,19 @@ Info de todos los aparcamientos
     <li style="float:right"><a href="/about">About</a></li>
 </ul>
 <br>
+<form id="distrito_form" action="" method ="POST">
+    {% csrf_token %}
+    <label for="distrito"> Distrito</label>
+    <input type="text" name="distrito">
+    <button type="submit">Buscar</button>
+</form>
 {% endblock lista_horizontal %}
+{% block texto_central %}
+<div id="info_aparcamiento_pequeña">
+    <ul>
+        {% for park in aparcamientos %}
+        <li><strong>Nombre:</strong> <span>{{park.nombre}}</span><a class="enlace_discreto" href="/aparcamientos/{{park.number}}">&nbsp+ Info</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock texto_central %}
