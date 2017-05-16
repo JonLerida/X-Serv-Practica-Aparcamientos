@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 # Create your models here.
 
 class Estilo(models.Model):
@@ -41,7 +41,7 @@ class Comentario (models.Model):
     texto = models.TextField()
     fecha = models.DateTimeField()
     def __str__(self):
-        return (self.texto+' '+self.usuario)
+        return (self.texto)
 
 class Pagina(models.Model):
     usuario = models.ForeignKey(Usuario)

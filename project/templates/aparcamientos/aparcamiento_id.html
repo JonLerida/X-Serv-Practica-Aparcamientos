@@ -35,7 +35,19 @@ El Aparcamiento solicitado no existe
         <li><strong>Código Postal:</strong> <span>{{aparcamiento.codigo_postal}}</span></li>
         <li><strong>Latitud:</strong> <span>{{aparcamiento.latitud}}</span></li>
         <li><strong>Longitud: </strong> <span>{{aparcamiento.longitud}}</span></li>
+        <br>
     </ul>
 </div>
+<div id ="comentarios">
+    <strong>Comentarios</strong>
+    <ul>
+        {% for comment in comentarios %}
+            <li><span id="comment_user"><strong>{{comment.usuario}}</strong></span> dice: <br>
+                {{comment.texto}} <br> <span id="comment_date">El {{comment.fecha}} </span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
 {% endif %}
  {% endblock texto_central %}

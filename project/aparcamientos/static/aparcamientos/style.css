@@ -324,3 +324,26 @@ div#info_aparcamiento_pequeña{
 #info_aparcamiento_pequeña li{
     list-style: none;
 }
+
+div#comentarios{
+    position: relative;
+    margin-left: 30%;
+    font-size: 0.8em;
+    margin-right: 30%;
+}
+
+#comentarios ul {
+    background-color:  #D7D7D7;
+    list-style-type: none;
+    padding: none;
+}
+
+#comment_user{
+    font-style: oblique;
+}
+
+#comment_date{
+    font-size: 0.65em;
+    position: relative;
+    right: 0;
+}

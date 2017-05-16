@@ -21,7 +21,9 @@ Devuelvo el menu horizontal y vertical y lalista de los 5 aparcamientos con más
 def Principal(request):
     if request.method == 'GET':
         template = loader.get_template('index.html')
+
         top_aparcamientos = AparcamientoMod.objects.all()
+        top_aparcamientos = ComentarioMod.objects.all().order_by('-aparcamiento__id').unique()[:5]
         pagina_list = PaginaMod.objects.all()
         context = {
             'top_aparcamientos': top_aparcamientos,
@@ -137,9 +139,11 @@ def InfoAparcamiento_id(request, id):
     template = loader.get_template("aparcamiento_id.html")
     try:
         aparcamiento_object = AparcamientoMod.objects.get(number=id)
+        comentarios_object = ComentarioMod.objects.filter(aparcamiento__number = id)
         context = {
             'aparcamiento_id': id,
             'aparcamiento':aparcamiento_object,
+            'comentarios': comentarios_object,
         }
     except AparcamientoMod.DoesNotExist:
         context = {
