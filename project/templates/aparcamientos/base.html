@@ -28,16 +28,18 @@
 
 <!-- Aqui habria que meter un algo para que si ya está registrado, no muestre el formulario-->
 <!-- Esto forma parte de la base porque lo utilizan todas-->
-{% if 0 %}
-    <p class="corner_message"> Hola {{user}}</p>
-    <a href='admin/logout/'><button>Salir</button></a><br>
+{% if not user.is_anonymous %}
+    <div class ="container_corner">
+        <div class="topright">
+            <span id="corner_message"><strong>Logeado como</strong>&nbsp<span class="oblicuo">{{user}}</span></span>
+            <a href='logout/'><button id="logged"type="submit">Salir</button></a><br>
+        </div>
+    </div>
 {% else %}
-    <form id="login_form" action="/login" method ="POST">
+    <form id="login_form" action="login/" method ="POST">
         {% csrf_token %}
-        <label for="nick"> Nick</label>
-        <input type="text" name="nick">
-        <label for="password">Contraseña</label>
-        <input type="password" name="password">
+        <label for="id_username"><span class="login_fields">Nick: </span></label> <input id="id_username" maxlength="254" name="username" type="text" />
+        <label for="id_password"><span class="login_fields">Contraseña: </span></label> <input id="id_password" name="password" type="password" />
         <button type="submit">Login</button>
     </form>
 {% endif %}
@@ -46,12 +48,8 @@
 <!-- Lista horizontal-->
 {% block lista_horizontal %}{% endblock lista_horizontal %}
 
-<!--Lisa Vertical-->
-<ul class="list_vertical">
-    {% for user in pagina_list %}
-    <li><a href="/{{user.usuario}}">{{user.nombre}}</a></li>
-    {% endfor %}
-</ul>
+{% block lista_vertical %}{% endblock lista_vertical %}
+
 
 {% block texto_central %} {% endblock texto_central %}
 

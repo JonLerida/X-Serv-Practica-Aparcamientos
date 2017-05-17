@@ -1,23 +1,12 @@
-{% extends "base.html" %}
-{% block redireccion %}
-<meta http-equiv='Refresh' content=5;url="/">
-{% endblock redireccion %}
+{% extends 'base.html' %}
 
+{% block title %}Login{% endblock %}
 
-
-
-
-{% block title %} Aparcamientos {% endblock title%}
-{% block title2 %}
-{{title2}}
-    {% if login_success %}
-        Has entrado correctamente
-    {% else %}
-        No has entrado
-    {% endif %}
-{% endblock title2 %}
-
-{% block texto_central %}
-<h4>{{texto_central}}</h4>
-{% endblock texto_central %}
-Esto se escribe igualmente
+{% block content %}
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">zzz</button>
+  </form>
+{% endblock %}

@@ -12,7 +12,14 @@
 </ul>
 <br>
 {% endblock lista_horizontal %}
-
+{% block lista_vertical%}
+<!--Lisa Vertical-->
+<ul class="list_vertical">
+    {% for user in pagina_list %}
+    <li><a href="/{{user.usuario}}">{{user.nombre}}</a></li>
+    {% endfor %}
+</ul>
+{% endblock lista_vertical %}
 
 {% block texto_central %}
 <h3> Aparcamientos con más comentarios:</h3>
