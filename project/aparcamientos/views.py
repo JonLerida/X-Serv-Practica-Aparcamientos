@@ -3,8 +3,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sites.models import Site
-import urllib
+from django.contrib.auth import authenticate, login
 from django.template import loader
+from django.shortcuts import redirect
 import xml.sax
 from .models import Estilo as EstiloMod
 from .models import Usuario as UsuarioMod
@@ -12,13 +13,13 @@ from .models import Aparcamiento as AparcamientoMod
 from .models import Comentario as ComentarioMod
 from .models import Pagina as PaginaMod
 from .models import Guardado as GuardadoMod
+from django.contrib.auth.models import User as UserMod
 # Parseadores
 from xml.sax.handler import ContentHandler
 import xml.sax
 import xml.parsers.expat
 import xml.sax
 import urllib
-
 import xmltodict
 
 
@@ -63,7 +64,6 @@ def Prueba(request):
         distrito_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][8]['#text'])
         latitud_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][-2]['#text'])
         longitud_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][-1]['#text'])
-        print(indexPark)
 
 
 
@@ -97,8 +97,6 @@ def Prueba(request):
             longitud = longitud,
         )
         new.save()
-
-
     return HttpResponse(data['Contenidos']['contenido'][9]['atributos']['atributo'][5]['atributo'][-1]['#text'])
 
 
@@ -113,9 +111,13 @@ Devuelvo el menu horizontal y vertical y lalista de los 5 aparcamientos con más
 @csrf_exempt
 def Principal(request):
     if request.method == 'GET':
+        if request.user.is_authenticated():
+            logged = 'Logged in as '+ request.user.username
+        else:
+            logged = 'Not logged in.'
         template = loader.get_template('index.html')
 
-        top_aparcamientos = AparcamientoMod.objects.all()
+        top_aparcamientos = AparcamientoMod.objects.all()[1:6]
         #top_aparcamientos = ComentarioMod.objects.all().order_by('-aparcamiento__id').unique()[:5]
         pagina_list = PaginaMod.objects.all()
         context = {
@@ -135,31 +137,19 @@ el login ese de las diapos, no se como. Si falla, no lo autentico. En cualquier 
 """
 @csrf_exempt
 def Login(request):
-    template = loader.get_template('login.html')
-    if request.method == 'POST':
-        nick = request.POST['nick']
-        password = request.POST['password']
-        try:
-            real_user = UsuarioMod.objects.get(nick=nick)
-            title2 = 'Usuario si existe'
-            if real_user.password == password:
-                texto_central = 'OK Volviendo a la página principal...'
-            else:
-                texto_central = 'KO Volviendo a la página principal...'
-        except UsuarioMod.DoesNotExist:
-            title2 = 'Usuario No existe'
-            texto_central = ''
-        context = {
-            'title2': title2,
-            'login_success': True,
-            'text_centeal': texto_central,
-            }
-    else:
-        context = {
-            'title2':'Método Invalido',
-        }
-    return HttpResponse(template.render(context, request))
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    template = loader.get_template('index.html')
+    context = {
 
+    }
+    if user is not None:
+        login(request, user)
+    else:
+        # Return an 'invalid login' error message.
+        print('fallo')
+    return redirect('/') 
 
 """
 Página de un usuario determinado: mostrar aparcamientos seleccionados por ese usuario, de 5 en 5

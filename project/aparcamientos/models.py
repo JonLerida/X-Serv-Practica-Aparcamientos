@@ -1,15 +1,16 @@
 from django.db import models
 import datetime
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Estilo(models.Model):
-    usuario = models.ForeignKey('Usuario')
+    usuario = models.ForeignKey(User)
     size = models.IntegerField(default='1')
     color = models.CharField(max_length=20, default='black')
     def __str__(self):
-        return self.usuario
+        return 'Estilo' + str(self.id)
 class Guardado(models.Model):
-    usuario = models.ForeignKey('Usuario')
+    usuario = models.ForeignKey(User)
     aparcamiento = models.ForeignKey('Aparcamiento')
     fecha = models.DateTimeField()
     def __str__(self):
@@ -43,7 +44,7 @@ class Aparcamiento (models.Model):
         return (self.number+'  '+self.nombre)
 
 class Comentario (models.Model):
-    usuario = models.ForeignKey(Usuario, null = True)
+    usuario = models.ForeignKey(User, null = True)
     aparcamiento = models.ForeignKey(Aparcamiento, null=True)
     texto = models.TextField()
     fecha = models.DateTimeField()
@@ -51,8 +52,8 @@ class Comentario (models.Model):
         return (self.texto)
 
 class Pagina(models.Model):
-    usuario = models.ForeignKey(Usuario)
+    usuario = models.ForeignKey(User)
     nombre = models.CharField(max_length=200, default='')
     enlace = models.CharField(max_length=200, default='')
     def __str__(self):
-        return ('Pagina de ' + self.usuario.nick)
+        return ('Pagina de ')
