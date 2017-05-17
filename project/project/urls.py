@@ -14,7 +14,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, logout
 
 urlpatterns = [
     url(r'^prueba$', "aparcamientos.views.Prueba", name='Principal'),
@@ -23,7 +23,9 @@ urlpatterns = [
     #página about
     url(r'^about$', "aparcamientos.views.About", name='About'),
     #Login
-    url(r'^login$', "aparcamientos.views.Login", name='Login de un usuario'),
+    url(r'^login/$', "aparcamientos.views.Login", name='Login de un usuario'),
+    #logout
+    url(r'^logout/$', logout, {'next_page': '/'}),
     #/aparcamientos
     url(r'^aparcamientos$', "aparcamientos.views.InfoAparcamientos", name='InfoAparcamiento'),
     #aparcamiento/id
