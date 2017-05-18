@@ -22,85 +22,86 @@ import xml.sax
 import urllib
 import xmltodict
 
+"""
+Diccionarios para el parser de aparcamientos
+"""
 
-def Prueba(request):
-    file = urllib.request.urlopen('http://datos.munimadrid.es/portal/site/egob/menuitem.ac61933d6ee3c31cae77ae7784f1a5a0/?vgnextoid=00149033f2201410VgnVCM100000171f5a0aRCRD&format=xml&file=0&filename=202584-0-aparcamientos-residentes&mgmtid=e84276ac109d3410VgnVCM2000000c205a0aRCRD&preview=full')
+
+KeyItemsLocal = [
+            'NOMBRE-VIA', 'CLASE-VIAL', 'NUM', 'LOCALIDAD','PROVINCIA',
+            'CODIGO-POSTAL', 'BARRIO', 'DISTRITO', 'LATITUD', 'LONGITUD',
+    ]   #campos que voy a guardar
+KeyItemsFirst = [
+    'ID-ENTIDAD', 'NOMBRE', 'DESCRIPCION', 'ACCESIBILIDAD', 'CONTENT-URL', 'LOCALIZACION', 'DATOSCONTACTOS',
+    ]
+
+ParkDict = {}
+LocDict = {}
+aparcamiento_parseado = {}
+ParkList = []                   # hacemos un diccionario de aparcamientos. Cada entrada es un diccionario de items del aparcamiento
+def XMLtoDict(XMLurl):
+    file = urllib.request.urlopen(XMLurl)
     data = file.read()
     data = xmltodict.parse(data)
+    return data
+
+def parse_localization(loc_field, park_number):
+    #provincia_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][5]['#text'])
+    for indexLocal, _ in enumerate(loc_field):
+        try:
+            campo_localizacion = loc_field[indexLocal]['@nombre']
+        except KeyError:
+            print('si')
+            continue
+        if campo_localizacion in KeyItemsLocal:
+            LocDict[campo_localizacion] = loc_field[indexLocal]['#text']
+
+    return LocDict
+
+
+def parse_park(park_item):
+    for index, item in enumerate(park_item):
+        campo = park_item[index]['@nombre']
+        if campo == 'LOCALIZACION' or campo == 'DATOSCONTACTOS':                 #tengo que profundizar en el árbol
+            print(campo)
+            try:
+                aux_park_dict = parse_localization(park_item[index]['atributo'], index)
+            except KeyError:
+                ParkDict.update(aux_park_dict)
+        elif campo in KeyItemsFirst:                # es dato básico
+            aux_park_dict = {campo: park_item[index]['#text']}
+            ParkDict.update({campo:park_item[index]['#text']})     #update(key, value)
+
+    return ParkDict
+
+def Prueba(request):
+    data = XMLtoDict('http://datos.munimadrid.es/portal/site/egob/menuitem.ac61933d6ee3c31cae77ae7784f1a5a0/?vgnextoid=00149033f2201410VgnVCM100000171f5a0aRCRD&format=xml&file=0&filename=202584-0-aparcamientos-residentes&mgmtid=e84276ac109d3410VgnVCM2000000c205a0aRCRD&preview=full')
+    aparcamientos = data['Contenidos']['contenido'] #267 aparcamientos
+    for index, park in enumerate(aparcamientos[0], 0):
+        parsed_park = parse_park(aparcamientos[index]['atributos']['atributo'])
+        ParkList.append(parsed_park)
+
     """
-    Listas de los datos parseados del fichero XML:
-    De los índices 0-4 de 'atributo'--> datos generales del aparcamiento
-    Para el índice 5, hay que volver a indexar la lista--> atributo
-    #text--> valor del campo
-    @name --> nombre del campo
-    """
-    id_parsed_list = []
-    nombre_parsed_list = []
-    descripcion_parsed_list = []
-    accesibilidad_parsed_list = []
-    url_parsed_list = []
-    via_parsed_list = []
-    localidad_parsed_list = []
-    provincia_parsed_list = []
-    codigo_parsed_list = []
-    barrio_parsed_list = []
-    distrito_parsed_list = []
-    latitud_parsed_list = []
-    longitud_parsed_list = []
-
-    for indexPark, _ in enumerate(data['Contenidos']['contenido'][0:10], 0):
-        # indices del 0-4: datos generales en contenidos-contenido-atributos-atributo
-        id_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][0]['#text'])
-        nombre_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][1]['#text'])
-        descripcion_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][2]['#text'])
-        accesibilidad_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][3]['#text'])
-        url_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][4]['#text'])
-        # indices del 5 en adelante, datos de localizacion
-        via_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][0]['#text'])
-        localidad_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][4]['#text'])
-        provincia_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][5]['#text'])
-        codigo_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][6]['#text'])
-        barrio_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][7]['#text'])
-        distrito_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][8]['#text'])
-        latitud_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][-2]['#text'])
-        longitud_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][-1]['#text'])
-
-
-
-    for index, _ in enumerate(id_parsed_list):
-        number = id_parsed_list[index]
-        nombre = nombre_parsed_list[index]
-        descripcion = descripcion_parsed_list[index]
-        accesible = accesibilidad_parsed_list[index]
-        url = url_parsed_list[index]
-        via = via_parsed_list[index]
-        localidad = localidad_parsed_list[index]
-        provincia = provincia_parsed_list[index]
-        cp = codigo_parsed_list[index]
-        barrio = barrio_parsed_list[index]
-        distrito = distrito_parsed_list[index]
-        latitud = latitud_parsed_list[index]
-        longitud = longitud_parsed_list[index]
-        #guardamos
-        new = AparcamientoMod(
-            number= number,
-            nombre = nombre,
-            descripcion = descripcion,
-            accesible=accesible,
-            url=url,
-            localidad=localidad,
-            provincia=provincia,
-            codigo_postal = cp,
-            barrio = barrio,
-            distrito = distrito,
-            latitud = latitud,
-            longitud = longitud,
+    for indexPark, Park in enumerate (ParkList):
+        new.AparcamientoMod(
+            number=Park(indexPark)['ID-IDENTIDAD'],
+            nombre =Park(indexPark)['NOMBRE'],
+            descripcion=Park(indexPark)['DESCRIPCION'],
+            accesible=Park(indexPark)['ACCESIBILIDAD'],
+            url=Park(indexPark)['CONTENT-URL'],
+            via=Park(indexPark)['NOMBRE-VIA'],
+            localidad=Park(indexPark)['LOCALIDAD'],
+            provincia=Park(indexPark)['PROVINCIA'],
+            codigo_postal=Park(indexPark)['CODIGO-POSTAL'],
+            barrio=Park(indexPark)['BARRIO'],
+            distrito=Park(indexPark)['DISTRITO'],
+            latitud=Park(indexPark)['LATITUD'],
+            longitud=Park(indexPark)['LONGITUD'],
         )
         new.save()
-    return HttpResponse(data['Contenidos']['contenido'][9]['atributos']['atributo'][5]['atributo'][-1]['#text'])
+    """
 
-
-
+    return HttpResponse(ParkList)
 
 
 
@@ -149,7 +150,7 @@ def Login(request):
     else:
         # Return an 'invalid login' error message.
         print('fallo')
-    return redirect('/') 
+    return redirect('/')
 
 """
 Página de un usuario determinado: mostrar aparcamientos seleccionados por ese usuario, de 5 en 5

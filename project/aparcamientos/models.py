@@ -25,10 +25,10 @@ class Usuario (models.Model):
 
 class Aparcamiento (models.Model):
     #number == id, no me deja django llamarlo id creo
-    number = models.CharField(max_length = 5, default='')
+    number = models.CharField(max_length = 10, default='')
     nombre = models.CharField(max_length=200, default='')
     descripcion = models.TextField(default = '', blank = True)
-    accesible = models.CharField(max_length=1, default='', blank=True)
+    accesible = models.BooleanField(default=False)
     url = models.CharField(max_length=200, default='', blank = True)
     via = models.CharField(max_length=100, default='', blank=True)
     localidad = models.CharField(max_length=100, default='', blank=True)
