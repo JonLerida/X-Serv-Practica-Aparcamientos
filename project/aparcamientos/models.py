@@ -48,7 +48,7 @@ class Aparcamiento (models.Model):
 class Comentario (models.Model):
     usuario = models.ForeignKey(User, null = True)
     aparcamiento = models.ForeignKey(Aparcamiento, null=True)
-    texto = models.TextField()
+    texto = models.TextField(default='')
     fecha = models.DateTimeField(default = timezone.now)
     def __str__(self):
         return (self.texto)
