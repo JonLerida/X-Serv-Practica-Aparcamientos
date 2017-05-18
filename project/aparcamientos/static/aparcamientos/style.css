@@ -121,7 +121,7 @@ footer.piepagina{
     max-width: 100%;
     border: 3px solid green;
     background-color: lightgrey;
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
@@ -341,9 +341,11 @@ a.enlace_decorado:hover{
     background-color: none;
 }
 
+
 #info_aparcamiento{
     display: inline-block;
     color: black;
+    width: 65%;
 }
 
 #info_aparcamiento ul{
@@ -366,6 +368,7 @@ div#info_aparcamiento_pequeña{
 div#comentarios{
     position: relative;
     margin-left: 30%;
+    margin-bottom: 20%;
     font-size: 0.8em;
     margin-right: 30%;
 }

@@ -17,7 +17,10 @@ from django.contrib import admin
 from django.contrib.auth.views import login, logout
 
 urlpatterns = [
-    url(r'^prueba$', "aparcamientos.views.Prueba", name='Principal'),
+    #prueba parser
+    url(r'^prueba$', "aparcamientos.views.Prueba", name='XML'),
+    # personalizar página de un usuario
+    url(r'^personaliza$', "aparcamientos.views.Personaliza", name="Personaliza"),
     # /
     url(r'^$', "aparcamientos.views.Principal", name='Principal'),
     #página about
