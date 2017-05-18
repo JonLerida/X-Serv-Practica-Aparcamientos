@@ -118,7 +118,7 @@ def Prueba(request):
             except KeyError:
                 continue
 
-        AparcamientoMod.objects.create(**model_dict_create)
+        #AparcamientoMod.objects.create(**model_dict_create)
 
     return HttpResponse('Parseado y guardado')
 
@@ -130,18 +130,14 @@ Devuelvo el menu horizontal y vertical y lalista de los 5 aparcamientos con más
 @csrf_exempt
 def Principal(request):
     if request.method == 'GET':
-        if request.user.is_authenticated():
-            logged = 'Logged in as '+ request.user.username
-        else:
-            logged = 'Not logged in.'
         template = loader.get_template('index.html')
 
         top_aparcamientos = AparcamientoMod.objects.all()[1:6]
         #top_aparcamientos = ComentarioMod.objects.all().order_by('-aparcamiento__id').unique()[:5]
-        pagina_list = PaginaMod.objects.all()
+        users = UserMod.objects.all()
         context = {
             'top_aparcamientos': top_aparcamientos,
-            'pagina_list': pagina_list,
+            'users': users,
             }
     else:
         template = loader.get_template('plana.html')
@@ -176,31 +172,49 @@ Comprobar si el usuario existe. Si existe, comprobar si tiene un estilo asociado
 estandar (negro,1em)
 """
 def Profile(request, usuario):
-    template = loader.get_template("perfil.html")
-    try:
-        usuario_object = UsuarioMod.objects.get(nick=usuario)
+    if request.method=='GET':
+        template = loader.get_template("perfil.html")
         try:
-            estilo_object = EstiloMod.objects.get(usuario__nick=usuario)
-            guardado_object = GuardadoMod.objects.filter(usuario__nick = usuario)[:5]
+            usuario_object = UserMod.objects.get(username=usuario)
+            try:
+                guardado_object = GuardadoMod.objects.filter(usuario__username = usuario)[:5] #sus aparcamientos
+                estilo_object = EstiloMod.objects.get(usuario__username=usuario)              # su estilo
+                context = {
+                    'usuario' : usuario_object,
+                    'estilo': estilo_object,
+                    'guardados': guardado_object,
+                }
+            except EstiloMod.DoesNotExist:
+                context = {
+                    'usuario' : usuario_object,
+                    'estilo': 'black',
+                    'user_size': '80',
+                }
+            # Aquí tengo que mandar los aparcamientos del usuaruo de 5 en 5
+        except UserMod.DoesNotExist:
             context = {
-                'user_nick' : usuario_object.nick,
-                'user_color': estilo_object.color,
-                'user_size': estilo_object.size,
-                'guardados': guardado_object,
+                'DoesNotExist': True,
             }
-        except EstiloMod.DoesNotExist:
-            context = {
-                'user_nick' : usuario_object.nick,
-                'user_color': 'black',
-                'user_size': '1',
-            }
-        # Aquí tengo que mandar los aparcamientos del usuaruo de 5 en 5
-    except UsuarioMod.DoesNotExist:
-        context = {
-            'DoesNotExist': True,
-        }
+    else:
+        return HttpResponse('HAN HECHO ALGO DISTINTO A GET EN /PROFILE')
 
     return HttpResponse(template.render(context, request))
+
+def Personaliza(request):
+    print(request.POST)
+    template = loader.get_template("personaliza.html")
+    user = request.POST['user']
+    try:
+        nombre = request.POST['nombre_pagina']
+    except KeyError:
+        color = request.POST['color']
+        size = request.POST['size']
+
+    context = {
+        'usuario': user,
+    }
+    return HttpResponse(template.render(context, request))
+
 
 """
 Página about del sitio
@@ -224,13 +238,17 @@ def InfoAparcamientos(request):
             'aparcamientos': aparcamiento_object,
         }
     elif request.method == 'POST':
-        distrito = request.POST['distrito']
-        if distrito =='':
+        print(request.POST)
+        filter_value = request.POST['filtro_value']
+        filter_name = request.POST['filtro_name']
+        message = 'Mostrando aparcamientos por: ' + filter_name
+        if filter_name =='':
             aparcamiento_object = AparcamientoMod.objects.all()
         else:
-            aparcamiento_object = AparcamientoMod.objects.filter(distrito=distrito)
+            aparcamiento_object = AparcamientoMod.objects.filter(**{filter_name: filter_value})
         context = {
             'aparcamientos': aparcamiento_object,
+            'message': message,
         }
     return HttpResponse(template.render(context, request))
 
@@ -239,7 +257,6 @@ def InfoAparcamientos(request):
 Página con la info de un determinado aparcamiento
 """
 def InfoAparcamiento_id(request, id):
-    print(id)
     template = loader.get_template("aparcamiento_id.html")
     try:
         aparcamiento_object = AparcamientoMod.objects.get(number=id)
