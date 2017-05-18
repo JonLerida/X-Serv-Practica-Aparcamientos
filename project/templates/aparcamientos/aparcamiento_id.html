@@ -13,7 +13,7 @@ El Aparcamiento solicitado no existe
 {%block lista_horizontal %}
 <ul class="list_horizontal">
     <li><a href="/">Inicio</a></li>
-    <li><a class href="/aparcamientos">Aparcamientos</a></li>
+    <li><a class="active" href="/aparcamientos">Aparcamientos</a></li>
     <li style="float:right"><a href="/about">About</a></li>
 </ul>
 <br>
@@ -27,17 +27,18 @@ El Aparcamiento solicitado no existe
         <li><strong>Provincia:</strong> <span>{{aparcamiento.provincia}}</span></li>
         <li> <strong>Barrio:</strong> <span>{{aparcamiento.barrio}}</span></li>
         <li><strong>Distrito:</strong> <span>{{aparcamiento.distrito}}</span></li>
-        {% if aparcamiento.accesibilidad == '1' %}
-            <li><strong>Accesible:</strong> <span>Si</span></li>
-        {% else %}
-            <li><strong>Accesible:</strong> <span>No</span></li>
-        {% endif %}
+        <li><strong>E-mail:</strong> <span>{{aparcamiento.email}}</span></li>
+        <li><strong>Teléfono:</strong> <span>{{aparcamiento.telefono}}</span></li>
+        <li><strong>Accesible:</strong> <span>{{aparcamiento.accesible}}</span></li>
+        <li><strong>Localidad:</strong> <span>{{aparcamiento.localidad}}</span></li>
         <li><strong>Código Postal:</strong> <span>{{aparcamiento.codigo_postal}}</span></li>
         <li><strong>Latitud:</strong> <span>{{aparcamiento.latitud}}</span></li>
         <li><strong>Longitud: </strong> <span>{{aparcamiento.longitud}}</span></li>
+        <li><strong>Descripción: </strong> <span style="font-style:oblique">{{aparcamiento.descripcion}}</span></li>
         <br>
     </ul>
 </div>
+
 <div id ="comentarios">
     <strong>Comentarios</strong>
     <ul>
@@ -47,6 +48,9 @@ El Aparcamiento solicitado no existe
             </li>
         {% endfor %}
     </ul>
+    {% if not user.is_anonymous %}
+        <span> Puedes poner comentario</span>
+    {% endif%}
 </div>
 
 {% endif %}

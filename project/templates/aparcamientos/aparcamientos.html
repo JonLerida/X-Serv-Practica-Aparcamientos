@@ -4,7 +4,7 @@
 {% block title %}
 Info de todos los aparcamientos
 {% endblock title %}
-ffff
+
 
 {%block lista_horizontal %}
 <ul class="list_horizontal">
@@ -13,10 +13,19 @@ ffff
     <li style="float:right"><a href="/about">About</a></li>
 </ul>
 <br>
-<form id="distrito_form" action="" method ="POST">
+<h4 style="width:50%;"> {{message}} </h4></span>
+<form id="filter_form" action="" method ="POST">
     {% csrf_token %}
-    <label for="distrito"> Distrito</label>
-    <input type="text" name="distrito">
+    <select name="filtro_name">
+        <option value ="accesible">Accesible</option>
+        <option value ="localidad">Localidad</option>
+        <option value ="provincia">Provincia</option>
+        <option value ="codigo_postal">Código Postal</option>
+        <option value ="number">ID-Entidad</option>
+        <option value ="barrio">Barrio</option>
+        <option selected value ="distrito">Distrito</option>
+    </select>
+    <input type="text" name="filtro_value">
     <button type="submit">Buscar</button>
 </form>
 {% endblock lista_horizontal %}
