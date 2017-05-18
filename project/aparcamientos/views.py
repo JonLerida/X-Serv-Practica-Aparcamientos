@@ -27,82 +27,100 @@ Diccionarios para el parser de aparcamientos
 """
 
 
-KeyItemsLocal = [
-            'NOMBRE-VIA', 'CLASE-VIAL', 'NUM', 'LOCALIDAD','PROVINCIA',
+KeyItemsSecond = [
+            'NOMBRE-VIA', 'CLASE-VIAL', 'LOCALIDAD','PROVINCIA',
             'CODIGO-POSTAL', 'BARRIO', 'DISTRITO', 'LATITUD', 'LONGITUD',
+            'TELEFONO', 'EMAIL',
     ]   #campos que voy a guardar
 KeyItemsFirst = [
-    'ID-ENTIDAD', 'NOMBRE', 'DESCRIPCION', 'ACCESIBILIDAD', 'CONTENT-URL', 'LOCALIZACION', 'DATOSCONTACTOS',
+            'ID-ENTIDAD', 'NOMBRE', 'DESCRIPCION', 'ACCESIBILIDAD',
+            'CONTENT-URL', 'LOCALIZACION', 'DATOSCONTACTOS',
+            'TELEFONO', 'EMAIL',
     ]
+"""
+Diccionario de conversión de nombre de campo del XML a models
+"""
+Estandar_to_ModelDict = {
+            'ID-ENTIDAD': 'number',
+            'NOMBRE': 'nombre',
+            'DESCRIPCION' : 'descripcion',
+            'ACCESIBILIDAD' : 'accesible',
+            'CONTENT-URL' : 'url',
+            'NOMBRE-VIA' : 'via',
+            'LOCALIDAD' : 'localidad',
+            'PROVINCIA' : 'provincia',
+            'CODIGO-POSTAL' : 'codigo_postal',
+            'BARRIO' : 'barrio',
+            'DISTRITO' : 'distrito',
+            'LATITUD' : 'latitud',
+            'LONGITUD' : 'longitud',
+            'TELEFONO' : 'telefono',
+            'EMAIL' : 'email',
+}
 
-ParkDict = {}
-LocDict = {}
-aparcamiento_parseado = {}
-ParkList = []                   # hacemos un diccionario de aparcamientos. Cada entrada es un diccionario de items del aparcamiento
 def XMLtoDict(XMLurl):
     file = urllib.request.urlopen(XMLurl)
     data = file.read()
     data = xmltodict.parse(data)
     return data
 
-def parse_localization(loc_field, park_number):
-    #provincia_parsed_list.append (data['Contenidos']['contenido'][indexPark]['atributos']['atributo'][5]['atributo'][5]['#text'])
+def parse_deeper(loc_field, park_number):
+    #para los elementos que tienen más atributos
+    LocDict = {}
     for indexLocal, _ in enumerate(loc_field):
         try:
             campo_localizacion = loc_field[indexLocal]['@nombre']
         except KeyError:
-            print('si')
             continue
-        if campo_localizacion in KeyItemsLocal:
+        if campo_localizacion in KeyItemsSecond:
             LocDict[campo_localizacion] = loc_field[indexLocal]['#text']
 
     return LocDict
 
 
 def parse_park(park_item):
+    ParkDict = {}   # vacío el diccionario porque si no sobreescribe lo mismo y guarda lo anterior
     for index, item in enumerate(park_item):
+        aux_park_dict = {}
         campo = park_item[index]['@nombre']
-        if campo == 'LOCALIZACION' or campo == 'DATOSCONTACTOS':                 #tengo que profundizar en el árbol
-            print(campo)
-            try:
-                aux_park_dict = parse_localization(park_item[index]['atributo'], index)
+        if campo == 'LOCALIZACION' or campo == 'DATOSCONTACTOS':    #tengo que profundizar en el árbol
+            try:                                                    # puede fallar porque algunos aparcamientos tienen Datos de contacto y otros no... (xd)
+                aux_park_dict = parse_deeper(park_item[index]['atributo'], index)
             except KeyError:
-                ParkDict.update(aux_park_dict)
+                pass
         elif campo in KeyItemsFirst:                # es dato básico
             aux_park_dict = {campo: park_item[index]['#text']}
-            ParkDict.update({campo:park_item[index]['#text']})     #update(key, value)
 
+        ParkDict.update(aux_park_dict)     #d.update(dict2)
     return ParkDict
 
 def Prueba(request):
+    ParkList = []
     data = XMLtoDict('http://datos.munimadrid.es/portal/site/egob/menuitem.ac61933d6ee3c31cae77ae7784f1a5a0/?vgnextoid=00149033f2201410VgnVCM100000171f5a0aRCRD&format=xml&file=0&filename=202584-0-aparcamientos-residentes&mgmtid=e84276ac109d3410VgnVCM2000000c205a0aRCRD&preview=full')
     aparcamientos = data['Contenidos']['contenido'] #267 aparcamientos
-    for index, park in enumerate(aparcamientos[0], 0):
-        parsed_park = parse_park(aparcamientos[index]['atributos']['atributo'])
-        ParkList.append(parsed_park)
+    for  park in aparcamientos:
+        ParkList.append(parse_park(park['atributos']['atributo']))
+    #Guardamos los aparcamientos
+    for Park in ParkList:
+        dicc = {}
+        model_dict_create = {}
+        for property in Park:
+            try:
+                model_property = Estandar_to_ModelDict[property]
+                if property == 'ACCESIBILIDAD':
+                    if Park[property] == '1':
+                        model_dict_create['accesible'] = True
+                    else:
+                        model_dict_create['accesible'] = False
 
-    """
-    for indexPark, Park in enumerate (ParkList):
-        new.AparcamientoMod(
-            number=Park(indexPark)['ID-IDENTIDAD'],
-            nombre =Park(indexPark)['NOMBRE'],
-            descripcion=Park(indexPark)['DESCRIPCION'],
-            accesible=Park(indexPark)['ACCESIBILIDAD'],
-            url=Park(indexPark)['CONTENT-URL'],
-            via=Park(indexPark)['NOMBRE-VIA'],
-            localidad=Park(indexPark)['LOCALIDAD'],
-            provincia=Park(indexPark)['PROVINCIA'],
-            codigo_postal=Park(indexPark)['CODIGO-POSTAL'],
-            barrio=Park(indexPark)['BARRIO'],
-            distrito=Park(indexPark)['DISTRITO'],
-            latitud=Park(indexPark)['LATITUD'],
-            longitud=Park(indexPark)['LONGITUD'],
-        )
-        new.save()
-    """
+                else :
+                    model_dict_create[model_property] = Park[property]
+            except KeyError:
+                continue
 
-    return HttpResponse(ParkList)
+        AparcamientoMod.objects.create(**model_dict_create)
 
+    return HttpResponse('Parseado y guardado')
 
 
 """

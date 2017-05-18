@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 
 class Estilo(models.Model):
@@ -25,8 +26,8 @@ class Usuario (models.Model):
 
 class Aparcamiento (models.Model):
     #number == id, no me deja django llamarlo id creo
-    number = models.CharField(max_length = 10, default='')
-    nombre = models.CharField(max_length=200, default='')
+    number = models.CharField(max_length = 10, default='', blank=True)
+    nombre = models.CharField(max_length=200, default='', blank = True)
     descripcion = models.TextField(default = '', blank = True)
     accesible = models.BooleanField(default=False)
     url = models.CharField(max_length=200, default='', blank = True)
@@ -38,7 +39,8 @@ class Aparcamiento (models.Model):
     distrito = models.CharField(max_length=200, default='', blank = True)
     latitud = models.CharField(max_length=200, default='', blank = True)
     longitud = models.CharField(max_length=200, default='',blank = True)
-    datos = models.CharField(max_length=200, default='', blank = True)
+    telefono = models.CharField(max_length=200, default='', blank = True)
+    email = models.CharField(max_length = 200, default = '', blank = True)
 
     def __str__(self):
         return (self.number+'  '+self.nombre)
@@ -47,7 +49,7 @@ class Comentario (models.Model):
     usuario = models.ForeignKey(User, null = True)
     aparcamiento = models.ForeignKey(Aparcamiento, null=True)
     texto = models.TextField()
-    fecha = models.DateTimeField()
+    fecha = models.DateTimeField(default = timezone.now)
     def __str__(self):
         return (self.texto)
 
