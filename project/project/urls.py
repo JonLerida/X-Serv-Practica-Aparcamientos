@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.contrib.auth.views import login, logout
 
 urlpatterns = [
-    #prueba parser
-    url(r'^prueba$', "aparcamientos.views.Prueba", name='XML'),
+    # Añadir aparcamiento a la página de un usuario 
+    url(r'^add_park$', "aparcamientos.views.add_park", name='Añadir aparcamiento'),
     # personalizar página de un usuario
     url(r'^personaliza$', "aparcamientos.views.Personaliza", name="Personaliza"),
     # /
