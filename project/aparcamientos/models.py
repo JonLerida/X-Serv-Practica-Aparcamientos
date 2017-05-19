@@ -2,16 +2,17 @@ from django.db import models
 import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
 # Create your models here.
 
 class Estilo(models.Model):
-    usuario = models.ForeignKey(User)
-    size = models.IntegerField(default='1')
-    color = models.CharField(max_length=20, default='black')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL)
+    size = models.IntegerField(default='80')
+    color = models.CharField(max_length=20, default='#D8FFD1')
     def __str__(self):
         return 'Estilo' + str(self.id)
 class Guardado(models.Model):
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL)
     aparcamiento = models.ForeignKey('Aparcamiento')
     fecha = models.DateTimeField()
     def __str__(self):
@@ -43,10 +44,10 @@ class Aparcamiento (models.Model):
     email = models.CharField(max_length = 200, default = '', blank = True)
 
     def __str__(self):
-        return (self.number+'  '+self.nombre)
+        return (self.nombre)
 
 class Comentario (models.Model):
-    usuario = models.ForeignKey(User, null = True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, null = True)
     aparcamiento = models.ForeignKey(Aparcamiento, null=True)
     texto = models.TextField(default='')
     fecha = models.DateTimeField(default = timezone.now)
@@ -54,8 +55,8 @@ class Comentario (models.Model):
         return (self.texto)
 
 class Pagina(models.Model):
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL)
     nombre = models.CharField(max_length=200, default='')
     enlace = models.CharField(max_length=200, default='')
     def __str__(self):
-        return ('Pagina de ')
+        return self.nombre
