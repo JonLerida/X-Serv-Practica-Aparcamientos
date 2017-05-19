@@ -14,16 +14,10 @@ class Estilo(models.Model):
 class Guardado(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL)
     aparcamiento = models.ForeignKey('Aparcamiento')
-    fecha = models.DateTimeField()
+    fecha = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return str(self.id)
 
-class Usuario (models.Model):
-    nick = models.CharField(max_length=200, blank = True)
-    password = models.CharField(max_length=200, blank = True)
-    aparcamientos = models.ManyToManyField('Aparcamiento')
-    def __str__(self):
-        return self.nick
 
 class Aparcamiento (models.Model):
     #number == id, no me deja django llamarlo id creo
