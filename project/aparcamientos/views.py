@@ -58,6 +58,9 @@ Estandar_to_ModelDict = {
             'EMAIL' : 'email',
 }
 
+
+
+
 def XMLtoDict(XMLurl):
     file = urllib.request.urlopen(XMLurl)
     data = file.read()
@@ -121,8 +124,28 @@ def Prueba(request):
         #AparcamientoMod.objects.create(**model_dict_create)
 
     return HttpResponse('Parseado y guardado')
+"""
+Devuelve dos objetos: uno con los usuarios que tienen páginas creadas (nombres personalizados)
+y otro con los usuarios restantes.
+"""
+def Get_UserPages_Names(page_object, usuario_object):
+    usuarios_con_pagina = page_object.values_list('usuario__username', flat=True)
+    list_user = []
+    for user in usuarios_con_pagina:
+        list_user.append(user)
+    user_object = usuario_object.exclude(username__in = list_user)
+    return (page_object, user_object)
 
-
+"""
+Devuelve una lista de los 5 aparcamientos más comentados
+"""
+def Get_MostCommented(com_obj, park_obj):
+    comments = com_obj.objects.all().order_by('aparcamiento').distinct()[:5]
+    names_list = []
+    for comment in comments:
+        names_list.append(comment.aparcamiento)
+    aparcamiento_object = park_obj.objects.filter(nombre__in = names_list)
+    return aparcamiento_object
 """
 Página principal del sitio: devuelo el banner, formulario de login o mensaje de bienvenida.
 Devuelvo el menu horizontal y vertical y lalista de los 5 aparcamientos con más comentarios
@@ -131,13 +154,14 @@ Devuelvo el menu horizontal y vertical y lalista de los 5 aparcamientos con más
 def Principal(request):
     if request.method == 'GET':
         template = loader.get_template('index.html')
-
-        top_aparcamientos = AparcamientoMod.objects.all()[1:6]
+        aparcamiento_object = Get_MostCommented(ComentarioMod, AparcamientoMod)
+        print(aparcamiento_object)
         #top_aparcamientos = ComentarioMod.objects.all().order_by('-aparcamiento__id').unique()[:5]
-        users = UserMod.objects.all()
+        [pagina_object, user_object] = Get_UserPages_Names(PaginaMod.objects.all(), UserMod.objects.all())
         context = {
-            'top_aparcamientos': top_aparcamientos,
-            'users': users,
+            'top_aparcamientos': aparcamiento_object,
+            'paginas': pagina_object,
+            'users': user_object,
             }
     else:
         template = loader.get_template('plana.html')
@@ -199,19 +223,51 @@ def Profile(request, usuario):
         return HttpResponse('HAN HECHO ALGO DISTINTO A GET EN /PROFILE')
 
     return HttpResponse(template.render(context, request))
-
-def Personaliza(request):
-    print(request.POST)
-    template = loader.get_template("personaliza.html")
-    user = request.POST['user']
+""" Método que devuelve el objecto 'Estilo' del usuario solicitante.
+Busca en la base, si existe el usuario, lo devuelve. Si no, crea uno nuevo con los parámetros por defecto
+"""
+def Check_Style(usuario):
+    background_color_default = '#D8FFD1'
+    size_default = '80' # %
     try:
+        estilo_object = EstiloMod.objects.get(usuario__username = usuario)
+    except EstiloMod.DoesNotExist:
+        user_object = UserMod.objects.get(username=usuario)
+        estilo_object = EstiloMod.objects.create(usuario = user_object, color = background_color_default, size=size_default)
+    return (estilo_object)
+
+
+
+"""
+Recurso al que se envía el POST cuando un usuario rellena el formulario de personalización de su página
+"""
+def Personaliza(request):
+    template = loader.get_template("personaliza.html")
+    #Comprobar si el usuario tiene creada una página de estilo
+    usuario = request.user.username
+    user_target = request.POST['user']
+    print(user_target)
+    try:
+        # el formulario ha sido para el nombre
         nombre = request.POST['nombre_pagina']
+        try:
+            pagina_object = PaginaMod.objects.get(usuario__username = user_target)
+            pagina_object.nombre = nombre
+            pagina_object.save()
+        except:
+            user_object = UserMod.objects.get(username=user_target)
+            PaginaMod.objects.create(usuario = user_object, nombre = nombre, enlace = 'http://localhost:8080/aparcamientos/'+user_target)
     except KeyError:
+        # el formulario ha sido para el estilo
         color = request.POST['color']
         size = request.POST['size']
+        estilo_object = Check_Style(user_target)
+        estilo_object.color = color
+        estilo_object.size = size
+        estilo_object.save()
 
     context = {
-        'usuario': user,
+        'usuario': usuario,
     }
     return HttpResponse(template.render(context, request))
 
@@ -258,18 +314,34 @@ Página con la info de un determinado aparcamiento
 """
 def InfoAparcamiento_id(request, id):
     template = loader.get_template("aparcamiento_id.html")
-    try:
+    if request.method=='GET':
+        try:
+            aparcamiento_object = AparcamientoMod.objects.get(number=id)
+            comentarios_object = ComentarioMod.objects.filter(aparcamiento__number = id)
+            context = {
+                'aparcamiento':aparcamiento_object,
+                'comentarios': comentarios_object,
+            }
+        except AparcamientoMod.DoesNotExist:
+            context = {
+                'DoesNotExist': True,
+            }
+    elif request.method =='POST':
+        texto = request.POST['comentario']
         aparcamiento_object = AparcamientoMod.objects.get(number=id)
-        comentarios_object = ComentarioMod.objects.filter(aparcamiento__number = id)
+        usuario = request.user.username
+        usuario_object = UserMod.objects.get(username = usuario)
+        ComentarioMod.objects.create(
+            usuario = usuario_object,
+            texto = texto,
+            aparcamiento = aparcamiento_object,
+        )
+        comentarios_object = ComentarioMod.objects.filter(aparcamiento__number=id)
         context = {
-            'aparcamiento_id': id,
             'aparcamiento':aparcamiento_object,
             'comentarios': comentarios_object,
-        }
-    except AparcamientoMod.DoesNotExist:
-        context = {
-            'DoesNotExist': True,
-        }
+                    }
+        #crear el nuevo comentario
     return HttpResponse(template.render(context, request))
 
 """
