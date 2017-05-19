@@ -13,7 +13,7 @@ Info de todos los aparcamientos
     <li style="float:right"><a href="/about">About</a></li>
 </ul>
 <br>
-<h4 style="width:50%;"> {{message}} </h4></span>
+<h4 style="width:50%;"> {{message}} {{count}}</h4></span>
 <form id="filter_form" action="" method ="POST">
     {% csrf_token %}
     <select name="filtro_name">
@@ -30,10 +30,17 @@ Info de todos los aparcamientos
 </form>
 {% endblock lista_horizontal %}
 {% block texto_central %}
-<div id="info_aparcamiento_pequeña">
-    <ul>
+<div>
+    <ul id="top_aparcamientos">
         {% for park in aparcamientos %}
-        <li><strong>Nombre:</strong> <span>{{park.nombre}}</span><a class="enlace_decorado" href="/aparcamientos/{{park.number}}">&nbsp+ Info</a></li>
+        <li><strong>Nombre:</strong> <span>{{park.nombre}}</span><a class="enlace_decorado" href="/aparcamientos/{{park.number}}">&nbsp+ Info</a>
+            {% if not user.is_anonymous %}
+            <form class="login_form" action="/add_park" method="post">
+                <input type="hidden" name="park_number" value="{{park.number}}">
+                <button  type="submit">Añadir!</button>
+            </form>
+            {% endif %}
+        </li>
         {% endfor %}
     </ul>
 </div>
