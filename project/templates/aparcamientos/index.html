@@ -15,8 +15,11 @@
 {% block lista_vertical%}
 <!--Lisa Vertical-->
 <ul class="list_vertical">
-    {% for user in users %}
-    <li><a href="/{{user.username}}">Página de {{user.username}}</a></li>
+    {% for pagina in paginas %}
+    <li><a href="{{pagina.enlace}}">{{pagina.nombre}}</a></li>
+    {% endfor %}
+    {% for usuario in users %}
+    <li><a href="{{usuario.username}}">Página de {{usuario.username}}</a></li>
     {% endfor %}
 </ul>
 {% endblock lista_vertical %}

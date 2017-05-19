@@ -3,7 +3,7 @@
 
 {% block title%}
 {% if not DoesNotExist %}
-Información del aparcamiento {{aparcamiento_id}}
+Información del aparcamiento {{aparcamiento.number}}
 {% else %}
 El Aparcamiento solicitado no existe
 {% endif %}
@@ -49,7 +49,11 @@ El Aparcamiento solicitado no existe
         {% endfor %}
     </ul>
     {% if not user.is_anonymous %}
-        <span> Puedes poner comentario</span>
+    <form id="style_form" action="" method ="POST">
+        {% csrf_token %}
+        <label for="comentario"><span class="login_fields">Introduce un comentario </span></label> <input id="id_username" name="comentario" type="text"/>
+        <button type="submit">Enviar</button>
+    </form>
     {% endif%}
 </div>
 
