@@ -279,6 +279,8 @@ Recurso al que se envía el POST cuando un usuario rellena el formulario de pers
 """
 def Personaliza(request):
     template = loader.get_template("personaliza.html")
+    URL = request.build_absolute_uri().split('/')
+    print(URL)
     #Comprobar si el usuario tiene creada una página de estilo
     usuario = request.user.username
     user_target = request.POST['user']
@@ -295,7 +297,6 @@ def Personaliza(request):
     except KeyError:
         # el formulario ha sido para el estilo
         color = request.POST['color']
-        print(color)
         size = request.POST['size']
         estilo_object = Check_Style(user_target)
         estilo_object.color = color
@@ -430,7 +431,14 @@ def add_park(request):
 Página con el XML de un usuario determinado
 """
 def UserXML(request, user):
-    return(HttpResponse('XML de '+user))
+    template = loader.get_template("user_xml.html")
+    guardado_object = GuardadoMod.objects.filter(usuario__username=user)
+    print(guardado_object)
+    context = {
+        'usuario': user,
+        'aparcamientos': guardado_object,
+    }
+    return(HttpResponse(template.render(context, request), content_type="text/xml"))
 
 """
 Página de info por si se introduce un recurso no válido
