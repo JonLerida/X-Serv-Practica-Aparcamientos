@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.contrib.auth.views import login, logout
 
 urlpatterns = [
-    # Añadir aparcamiento a la página de un usuario 
+    # Añadir aparcamiento a la página de un usuario
     url(r'^add_park$', "aparcamientos.views.add_park", name='Añadir aparcamiento'),
     # personalizar página de un usuario
     url(r'^personaliza$', "aparcamientos.views.Personaliza", name="Personaliza"),
@@ -34,7 +34,7 @@ urlpatterns = [
     #aparcamiento/id
     url(r'^aparcamientos/([0-9]+)$', "aparcamientos.views.InfoAparcamiento_id", name='InfoAparcamiento'),
     #usuario/xml
-    url(r'^([a-zA-Z]+)/xml$', "aparcamientos.views.UserXML", name='UserXML'),
+    url(r'^([a-zA-Z0-9]+)/xml$', "aparcamientos.views.UserXML", name='UserXML'),
     # Admin site
     url(r'^admin/', include(admin.site.urls)),
     # cadena de letras mayúsculas o minúsculas, no vacía. Es decir, un usuario
