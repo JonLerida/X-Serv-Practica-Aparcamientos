@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Contenidos>
+    <infoDataset>
+        <nombre>Aparcamientos pertenecientes a: {{usuario}}</nombre>
+        <id>202584-0</id>
+        <uri>http://datos.madrid.es/egob/catalogo/202584-0-aparcamientos-residentes</uri>
+        <descripcion>
+        El Ayuntamiento de Madrid ofrece a los ciudadanos una amplia red de aparcamientos  para residentes (P.A.R.)
+        Las plazas de estos aparcamientos son de gestión municipal, y se adjudican a los residentes empadronados,
+        mediante sorteo, por un período de 40 años. Pueden acceder al uso de estas plazas las personas físicas que,
+        disponiendo de vehículo, residan de hecho y estén empadronadas en el área de influencia que se establece
+        para cada aparcamiento. Adicionalmente, el servicio público de aparcamientos en su modalidad  de mixtos
+        o con reserva de plaza,  viene prestándose en la práctica totalidad mediante gestión indirecta, a través
+        de la figura intermedia de un concesionario. En estos casos, el gestor del aparcamiento se obliga a mantener
+        durante todo el período de tiempo pactado una plaza de aparcamiento a disposición plena del usuario, por lo que
+         suelen existir espacios o plantas completas reservadas para este uso.
+        </descripcion>
+    </infoDataset>
+ {% for park in aparcamientos %}
+    <contenido>
+    <tipo>EntidadesYOrganismos</tipo>
+    <atributos idioma="es">
+        <atributo nombre="ID-ENTIDAD">{{park.aparcamiento.number}}</atributo>
+        <atributo nombre="NOMBRE">{{park.nombre}}</atributo>
+        <atributo nombre="DESCRIPCION">
+        {{park.aparcamiento.descripcion}}
+        </atributo>
+        <atributo nombre="ACCESIBILIDAD">{{park.aparcamiento.accesibilidad}}</atributo>
+        <atributo nombre="CONTENT-URL">
+        {{park.aparcamiento.url}}
+        </atributo>
+        <atributo nombre="LOCALIZACION">
+            <atributo nombre="NOMBRE-VIA">{{park.aparcamiento.via}}</atributo>
+            <atributo nombre="LOCALIDAD">{{park.aparcamiento.localidad}}</atributo>
+            <atributo nombre="PROVINCIA">{{park.aparcamiento.provincia}}</atributo>
+            <atributo nombre="CODIGO-POSTAL">{{park.aparcamiento.codigo_postal}}</atributo>
+            <atributo nombre="BARRIO">{{park.aparcamiento.barrio}}</atributo>
+            <atributo nombre="DISTRITO">{{park.aparcamiento.distrito}}</atributo>
+            <atributo nombre="LATITUD">{{park.aparcamiento.latitud}}</atributo>
+            <atributo nombre="LONGITUD">{{park.aparcamiento.longitud}}</atributo>
+        </atributo>
+        <atributo nombre="DATOSCONTACTOS">
+            <atributo nombre="TELEFONO">{{park.aparcamiento.telefono}}</atributo>
+            <atributo nombre="EMAIL">{{park.aparcamiento.email}}</atributo>
+        </atributo>
+        <atributo nombre="TIPO">/contenido/entidadesYorganismos/AparcamientosResidentes</atributo>
+    </atributos>
+</contenido>
+{% endfor %}
+</Contenidos>

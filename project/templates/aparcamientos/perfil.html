@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if DoesNotExist %}
+El perfil buscado no se encuentra en la base de datos
+{% else %}
+Perfil de {{usuario.username}}
+{% endif %}
+{% endblock title %}
+
+
+
+{%block lista_horizontal %}
+<ul class="list_horizontal">
+    <li><a href="/">Inicio</a></li>
+    <li><a class href="/aparcamientos">Aparcamientos</a></li>
+    <li style="float:right"><a href="/about">About</a></li>
+</ul>
+<br>
+{% endblock lista_horizontal %}
+
+{% block texto_central %}
+{% if not DoesNotExist %}
+    {% if not user.is_anonymous %}
+    <span> Selecciona el estilo para <strong>{{usuario.username}}</strong></span>
+    <form id="style_form" action="/personaliza" method ="POST">
+        {% csrf_token %}
+        <input type="hidden" name="user" value="{{usuario.username}}">
+        <label for="color"><span class="login_fields">Color de fondo: </span></label> <input id="id_username"  name="color" type="color" value="#D8FFD1"/>
+        <label for="size"><span class="login_fields">Tamaño (%):
+        </span></label> <input id="id_password" name="size" type="number" value = "80" min="1" max = "100" />
+        <button type="submit">Enviar</button>
+    </form>
+
+    <span> Selecciona el nombre de la página de <strong>{{usuario.username}}</strong></span>
+    <form id="style_form" action="/personaliza" method ="POST">
+        {% csrf_token %}
+        <input type="hidden" name="user" value="{{usuario.username}}">
+        <label for="color"><span class="login_fields">Nombre: </span></label>
+        <input id="id_username" maxlength="254" name="nombre_pagina" type="text" value="Página de {{usuario.username}}"/>
+        <button type="submit">Enviar</button>
+    </form>
+    {% endif %}
+    <div id="texto_central">
+    <h2>Aparcamientos guardados</h2>
+    <ul id="top_aparcamientos">
+        {% for park in guardados %}
+            <li><a class="enlace_decorado" href="{{park.aparcamiento.url}}">{{park.aparcamiento.nombre}}</a>
+                <span><strong>Dirección:</strong> {{park.aparcamiento.distrito}}, {{park.aparcamiento.barrio}}.
+                <strong>Fecha:</strong> {{park.fecha}}</span>&nbsp<span><a class="enlace_decorado" href="/aparcamientos/{{park.aparcamiento.number}}">
+                    + Info</a>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+    </div>
+{% endif %}
+ {% endblock texto_central %}
