@@ -84,6 +84,21 @@ def Check_Style(usuario):
     return (estilo_object)
 
 """
+Método que se encarga de decidir si el usuario solicitante recibe un estilo determinado o el establecido
+por defecto. Devuelve el estilo asociado, en forma de diccionario.
+"""
+def Get_Style(request):
+    if request.user.is_authenticated():
+        estilo_object = Check_Style(request.user.username)
+        estilo = {'color': estilo_object.color, 'size': estilo_object.size,}
+    else:
+        estilo = {'color': '#D8FFD1', 'size': '80',}
+
+    return estilo
+
+
+
+"""
 Método que convierte una URL de un XML en un diccionario parseable
 """
 
@@ -211,11 +226,14 @@ Devuelvo el menu horizontal y vertical y lalista de los 5 aparcamientos con más
 @csrf_exempt
 def Principal(request):
     if request.method == 'GET':
+        estilo = Get_Style(request)
         template = loader.get_template('index.html')
         aparcamiento_object = Get_MostCommented(ComentarioMod, AparcamientoMod)
         #top_aparcamientos = ComentarioMod.objects.all().order_by('-aparcamiento__id').unique()[:5]
         [pagina_object, user_object] = Get_UserPages_Names(PaginaMod.objects.all(), UserMod.objects.all())
         context = {
+            'color': estilo['color'],
+            'size': estilo['size'],
             'top_aparcamientos': aparcamiento_object,
             'paginas': pagina_object,
             'users': user_object,
@@ -239,11 +257,54 @@ def Login(request):
     if user is not None:
         login(request, user)
     else:
-        # Return an 'invalid login' error message.
-        print('fallo')
+        pass
+        return redirect('/registrate/') #call the login view
     return redirect('/')
 
+def Registrate(request):
+    template = loader.get_template("registrate.html")
+    [pagina_object, user_object] = Get_UserPages_Names(PaginaMod.objects.all(), UserMod.objects.all())
 
+    if request.method =='GET':
+        title = 'El usuario solicitado no existe.'
+        title2 = '¿Desea crear uno nuevo?'
+        context = {
+            'title': title,
+            'title2': title2,
+            'paginas': pagina_object,
+            'users': user_object,
+        }
+    elif request.method =='POST':
+        #Han rellenado el formulario
+        new_usuario = request.POST.get('username', None) #para que no haya duplicados usuarios
+        new_password =request.POST.get('password', None)
+        user, created = UserMod.objects.get_or_create(username=new_usuario, is_staff = True)
+        if created:
+            user.set_password(new_password) # This line will hash the password
+            user.save() #DO NOT FORGET THIS LINE
+            user = authenticate(username=new_usuario, password=new_password)
+            login(request, user)
+            title = 'Usuario creado con éxito'
+            title2 = 'Redirigiendo a página principal'
+            context = {
+                'title': title,
+                'title2':title2,
+                'paginas': pagina_object,
+                'users': user_object,
+                'redireccion': True,
+            }
+        else:
+            title = 'Error al crear nuevo usuario'
+            title2=' El usario ya existe. Pruebe otro'
+            context = {
+                'title': title,
+                'title2': title2,
+                'paginas': pagina_object,
+                'users': user_object,
+                'redireccion': False,
+            }
+
+    return HttpResponse(template.render(context, request))
 
 
 """
@@ -252,19 +313,41 @@ Comprobar si el usuario existe. Si existe, comprobar si tiene un estilo asociado
 estandar (negro,1em)
 """
 def Profile(request, usuario):
+    estilo = Get_Style(request)
+    try:
+        offset = request.GET['offset']  #Si no ponemos nada de offset, es como si fuese 0.
+        print(offset)
+    except KeyError:
+        offset = 0
     if request.method=='GET':
         template = loader.get_template("perfil.html")
         try:
             usuario_object = UserMod.objects.get(username=usuario)
-            guardado_object = GuardadoMod.objects.filter(usuario__username = usuario)[:5] #sus aparcamientos
-            estilo_object = Check_Style(usuario)            # su estilo
+            offset = int(offset)
+            interval = [offset*5, (offset+1)*5]
+            start = interval[0]
+            end = interval[1]
+            guardado_object = GuardadoMod.objects.filter(usuario__username = usuario)[start:end] #sus aparcamientos
+            prev = False                            # Variables para no tener los enlaces cuando no haya más aparcamientos
+            next = False
+            if guardado_object.count() == 5:
+                next = True
+            if offset != 0:
+                prev = True
+
             context = {
+                'next': next,
+                'prev': prev,
+                'offset': offset,
                 'usuario' : usuario_object,
-                'estilo': estilo_object,
+                'color': estilo['color'],
+                'size': estilo['size'],
                 'guardados': guardado_object,
             }
         except UserMod.DoesNotExist:
             context = {
+                'color': estilo['color'],
+                'size': estilo['size'],
                 'DoesNotExist': True,
             }
     else:
@@ -278,6 +361,7 @@ def Profile(request, usuario):
 Recurso al que se envía el POST cuando un usuario rellena el formulario de personalización de su página
 """
 def Personaliza(request):
+    estilo = Get_Style(request)
     template = loader.get_template("personaliza.html")
     URL = request.build_absolute_uri().split('/')
     print(URL)
@@ -304,6 +388,8 @@ def Personaliza(request):
         estilo_object.save()
 
     context = {
+        'color': estilo['color'],
+        'size': estilo['size'],
         'usuario': user_target,
     }
     return HttpResponse(template.render(context, request))
@@ -313,9 +399,11 @@ def Personaliza(request):
 Página about del sitio
 """
 def About(request):
+    estilo = Get_Style(request)
     template = loader.get_template("about.html")
     context = {
-
+        'color': estilo['color'],
+        'size': estilo['size'],
     }
     return HttpResponse(template.render(context, request))
 
@@ -325,10 +413,13 @@ Página con la info básica de todos los aparcamientos. Si el método es GET, de
 """
 def InfoAparcamientos(request):
     CheckDataBase()
+    estilo = Get_Style(request)
     template = loader.get_template("aparcamientos.html")
     if request.method == 'GET':
         aparcamiento_object = AparcamientoMod.objects.all()
         context = {
+            'color': estilo['color'],
+            'size': estilo['size'],
             'aparcamientos': aparcamiento_object,
         }
     elif request.method == 'POST':
@@ -349,6 +440,8 @@ def InfoAparcamientos(request):
                 aparcamiento_object = AparcamientoMod.objects.filter(**{filter_name: filter_value})
         count = aparcamiento_object.count()
         context = {
+            'color': estilo['color'],
+            'size': estilo['size'],
             'aparcamientos': aparcamiento_object,
             'message': message,
             'count': '('+str(count)+')',
@@ -360,17 +453,22 @@ def InfoAparcamientos(request):
 Página con la info de un determinado aparcamiento
 """
 def InfoAparcamiento_id(request, id):
+    estilo = Get_Style(request)
     template = loader.get_template("aparcamiento_id.html")
     if request.method=='GET':
         try:
             aparcamiento_object = AparcamientoMod.objects.get(number=id)
             comentarios_object = ComentarioMod.objects.filter(aparcamiento__number = id)
             context = {
+                'color': estilo['color'],
+                'size': estilo['size'],
                 'aparcamiento':aparcamiento_object,
                 'comentarios': comentarios_object,
             }
         except AparcamientoMod.DoesNotExist:
             context = {
+                'color': estilo['color'],
+                'size': estilo['size'],
                 'DoesNotExist': True,
             }
     elif request.method =='POST':
@@ -385,6 +483,8 @@ def InfoAparcamiento_id(request, id):
         )
         comentarios_object = ComentarioMod.objects.filter(aparcamiento__number=id)
         context = {
+            'color': estilo['color'],
+            'size': estilo['size'],
             'aparcamiento':aparcamiento_object,
             'comentarios': comentarios_object,
                     }
@@ -393,6 +493,7 @@ def InfoAparcamiento_id(request, id):
 
 @csrf_exempt
 def add_park(request):
+    estilo = Get_Style(request)
     template = loader.get_template("add_park.html")
     usuario = request.user.username
     park_number = request.POST['park_number']
@@ -405,6 +506,8 @@ def add_park(request):
             #si ya existe, significa que ya lo tenía guardado. No hacemos nada
             message = 'El aparcamiento seleccionado ya pertenece a tu lista!'
             context = {
+                'color': estilo['color'],
+                'size': estilo['size'],
                 'title': message,
                 }
             return HttpResponse(template.render(context, request))
@@ -444,8 +547,11 @@ def UserXML(request, user):
 Página de info por si se introduce un recurso no válido
 """
 def NoMatch(request):
+    estilo = Get_Style(request)
+
     template = loader.get_template("nomatch.html")
     context = {
-
+        'color': estilo['color'],
+        'size': estilo['size'],
     }
     return HttpResponse(template.render(context, request))
