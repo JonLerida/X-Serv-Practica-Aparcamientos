@@ -13,11 +13,11 @@
 <img class="banner" src='{% static "aparcamientos/images/banner.jpg" %}' alt="banner">
 
 <!--dimensiones originales de la foto son 1400x900, factor de 1.42-->
-{% if user_color %}
+{% if color %}
 <style>
   body{
-    background-color: {{ user_color }};
-    font-size: {{user_size}}%;
+    background-color: {{color}};
+    font-size: {{size}}%;
   }
 </style>
 {% endif %}
@@ -28,17 +28,18 @@
 
 <!-- Aqui habria que meter un algo para que si ya está registrado, no muestre el formulario-->
 <!-- Esto forma parte de la base porque lo utilizan todas-->
+
 {% if not user.is_anonymous %}
     <div class ="container_corner">
         <div class="topright">
-            <span id="corner_message"><strong>Logeado como</strong>&nbsp<span class="oblicuo">{{user}}</span></span>
+            <span id="corner_message"><strong>Logeado como </strong>&nbsp<span class="oblicuo">{{user}}</span></span>
             <a href='logout/'><button id="logged"type="submit">Salir</button></a><br>
         </div>
     </div>
 {% else %}
-    <form id="login_form" action="login/" method ="POST">
+    <form id="login_form" action="/login/" method ="POST">
         {% csrf_token %}
-        <label for="id_username"><span class="login_fields">Nick: </span></label> <input id="id_username" maxlength="254" name="username" type="text" />
+        <label for="id_username"><span class="login_fields">Usuario: </span></label> <input id="id_username" maxlength="254" name="username" type="text" />
         <label for="id_password"><span class="login_fields">Contraseña: </span></label> <input id="id_password" name="password" type="password" />
         <button type="submit">Login</button>
     </form>

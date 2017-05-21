@@ -42,17 +42,25 @@ Perfil de {{usuario.username}}
     </form>
     {% endif %}
     <div id="texto_central">
-    <h2>Aparcamientos guardados</h2>
-    <ul id="top_aparcamientos">
-        {% for park in guardados %}
-            <li><a class="enlace_decorado" href="{{park.aparcamiento.url}}">{{park.aparcamiento.nombre}}</a>
-                <span><strong>Dirección:</strong> {{park.aparcamiento.distrito}}, {{park.aparcamiento.barrio}}.
-                <strong>Fecha:</strong> {{park.fecha}}</span>&nbsp<span><a class="enlace_decorado" href="/aparcamientos/{{park.aparcamiento.number}}">
-                    + Info</a>
-                </span>
-            </li>
-        {% endfor %}
-    </ul>
+        <h2>Aparcamientos guardados</h2>
+        <ul id="top_aparcamientos">
+            {% for park in guardados %}
+                <li><a class="enlace_decorado" href="{{park.aparcamiento.url}}">{{park.aparcamiento.nombre}}</a>
+                    <span><strong>Dirección:</strong> {{park.aparcamiento.distrito}}, {{park.aparcamiento.barrio}}.
+                    <strong>Fecha:</strong> {{park.fecha}}</span>&nbsp<span><a class="enlace_decorado" href="/aparcamientos/{{park.aparcamiento.number}}">
+                        + Info</a>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+        <div id="enlaces_bajos">
+            {% if prev %}
+                <span class="left"><a id="anterior" class ="enlace_decorado" href="/{{usuario.username}}?offset={{offset|add:"-1" }}">&lt;&lt;Anterior</a></span>
+            {% endif %}
+            {% if next %}
+                <span class="right"><a id ="siguiente" class ="enlace_decorado" href="/{{usuario.username}}?offset={{offset|add:"1" }}">Siguiente&gt;&gt;</a></span>
+            {% endif %}
+        </div>
     </div>
 {% endif %}
  {% endblock texto_central %}
