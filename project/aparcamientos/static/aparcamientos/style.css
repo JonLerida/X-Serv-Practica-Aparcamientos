@@ -8,6 +8,7 @@ body{
     margin: 0;
     padding: 0;
     background-color: #D8FFD1;
+    padding-bottom: 700px;
 }
 img.banner{
     float: left;
@@ -81,13 +82,11 @@ th{
 #top_aparcamientos li{
     border-top: 2px solid #009900;
     padding: inherit;
-    /*border-bottom: 3px solid red;*/
     background-color: lightgrey;;
 }
 
 #top_aparcamientos li:last-child{
     border-bottom: 2px solid #009900;
-    /*border-bottom: 3px solid red;*/
     padding: inherit;
     background-color: lightgrey;;
 }
@@ -245,8 +244,6 @@ ul.list_horizontal {
     background-color: #333;
 }
 
-                                                        /*Links dentro de una lista*/
-
 
 ul.list_horizontal a:hover, ul.list_horizontal a:active{
     background-color: #BBBBBB;
@@ -400,7 +397,6 @@ div#twitter_link{
 }
 div#texto_central{
     position: absolute;
-    margin-bottom: 300px;
     max-width: 100%;
     left: 200px;
 }
@@ -453,3 +449,19 @@ button#logged:hover {
     border-radius: 2px;
     cursor: pointer;
 }
+
+div#enlaces_bajos{
+    text-align: center;
+}
+
+
+#enlaces_bajos span.left{
+    color: red;
+    position: absolute;
+    left: 0;
+}
+
+
+#enlaces_bajos span.right{
+    position: absolute;
+    right: 0;}
