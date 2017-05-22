@@ -21,7 +21,9 @@ urlpatterns = [
     url(r'^add_park$', "aparcamientos.views.add_park", name='Añadir aparcamiento'),
     # personalizar página de un usuario
     url(r'^personaliza$', "aparcamientos.views.Personaliza", name="Personaliza"),
-    # /
+    # XML de la página principal (opcional)
+    url(r'^index/xml$', "aparcamientos.views.Index_XML", name="XML página principal"),
+    # página principal
     url(r'^$', "aparcamientos.views.Principal", name='Principal'),
     #página about
     url(r'^about$', "aparcamientos.views.About", name='About'),

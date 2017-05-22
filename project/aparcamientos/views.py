@@ -377,7 +377,7 @@ def Personaliza(request):
             pagina_object.save()
         except:
             user_object = UserMod.objects.get(username=user_target)
-            PaginaMod.objects.create(usuario = user_object, nombre = nombre, enlace = 'http://localhost:8080/aparcamientos/'+user_target)
+            PaginaMod.objects.create(usuario = user_object, nombre = nombre, enlace = 'http://localhost:8080/'+user_target)
     except KeyError:
         # el formulario ha sido para el estilo
         color = request.POST['color']
@@ -542,6 +542,20 @@ def UserXML(request, user):
         'aparcamientos': guardado_object,
     }
     return(HttpResponse(template.render(context, request), content_type="text/xml"))
+
+"""
+Generación del contenido de la página principal en formato XML (opcional)
+"""
+def Index_XML(request):
+    template = loader.get_template("index_xml.html")
+    aparcamiento_object = Get_MostCommented(ComentarioMod, AparcamientoMod)
+    [pagina_object, usuario_object] = Get_UserPages_Names(PaginaMod.objects.all(), UserMod.objects.all())
+    context = {
+        'usuario_object': usuario_object,
+        'aparcamiento_object': aparcamiento_object,
+        'pagina_object': pagina_object,
+    }
+    return HttpResponse(template.render(context, request), content_type="text/xml")
 
 """
 Página de info por si se introduce un recurso no válido
