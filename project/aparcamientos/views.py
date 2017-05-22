@@ -281,6 +281,17 @@ def Registro(request):
         #Han rellenado el formulario
         new_usuario = request.POST.get('username', None) #para que no haya duplicados usuarios
         new_password =request.POST.get('password', None)
+        if new_usuario=='':
+            title = 'Error al crear nuevo usuario'
+            title2='No has introducido ningún usuario/contraseña'
+            context = {
+                'title': title,
+                'title2': title2,
+                'paginas': pagina_object,
+                'users': user_object,
+                'redireccion': False,
+            }
+            return HttpResponse(template.render(context, request))
         user, created = UserMod.objects.get_or_create(username=new_usuario, is_staff = True)
         if created:
             user.set_password(new_password) # Para hashear la contraseña y que no se vea
