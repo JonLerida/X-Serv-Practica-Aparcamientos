@@ -258,11 +258,11 @@ def Login(request):
         login(request, user)
     else:
         pass
-        return redirect('/registrate/') #call the login view
+        return redirect('/registro/') #call the login view
     return redirect('/')
 
-def Registrate(request):
-    template = loader.get_template("registrate.html")
+def Registro(request):
+    template = loader.get_template("registro.html")
     [pagina_object, user_object] = Get_UserPages_Names(PaginaMod.objects.all(), UserMod.objects.all())
 
     if request.method =='GET':
