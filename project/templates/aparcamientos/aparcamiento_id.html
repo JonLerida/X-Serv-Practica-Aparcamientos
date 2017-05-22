@@ -39,6 +39,21 @@ El Aparcamiento solicitado no existe
     </ul>
 </div>
 
+<div class="votesBox">
+    <div class="votes"><span><strong>Puntuación: {{aparcamiento.puntuacion}} </strong></span></div>
+    <div class="vote">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="voto" value="up">
+            <div class="UpVote"><input type="image" src="https://goo.gl/cqzE6k" width="40" alt="UpVote"/></div>
+        </form>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="voto" value="down">
+            <div class="DownVote"><input type="image" src="https://goo.gl/qgCDs7" width="40" alt="DownVote" /></div>
+        </form>
+    </div>
+</div>
 <div id ="comentarios">
     <strong>Comentarios</strong>
     <ul>

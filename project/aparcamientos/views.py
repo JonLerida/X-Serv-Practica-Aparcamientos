@@ -450,8 +450,9 @@ def InfoAparcamientos(request):
 
 
 """
-Página con la info de un determinado aparcamiento
+Página con la info de un determinado aparcamiento. Permite votar positivo y negativo
 """
+@csrf_exempt
 def InfoAparcamiento_id(request, id):
     estilo = Get_Style(request)
     template = loader.get_template("aparcamiento_id.html")
@@ -472,22 +473,41 @@ def InfoAparcamiento_id(request, id):
                 'DoesNotExist': True,
             }
     elif request.method =='POST':
-        texto = request.POST['comentario']
-        aparcamiento_object = AparcamientoMod.objects.get(number=id)
-        usuario = request.user.username
-        usuario_object = UserMod.objects.get(username = usuario)
-        ComentarioMod.objects.create(
-            usuario = usuario_object,
-            texto = texto,
-            aparcamiento = aparcamiento_object,
-        )
-        comentarios_object = ComentarioMod.objects.filter(aparcamiento__number=id)
-        context = {
-            'color': estilo['color'],
-            'size': estilo['size'],
-            'aparcamiento':aparcamiento_object,
-            'comentarios': comentarios_object,
-                    }
+        try:
+            texto = request.POST['comentario']
+            aparcamiento_object = AparcamientoMod.objects.get(number=id)
+            usuario = request.user.username
+            usuario_object = UserMod.objects.get(username = usuario)
+            ComentarioMod.objects.create(
+                usuario = usuario_object,
+                texto = texto,
+                aparcamiento = aparcamiento_object,
+            )
+            comentarios_object = ComentarioMod.objects.filter(aparcamiento__number=id)
+            context = {
+                'color': estilo['color'],
+                'size': estilo['size'],
+                'aparcamiento':aparcamiento_object,
+                'comentarios': comentarios_object,
+                        }
+        except KeyError:
+            print(request.POST)
+            voto = request.POST['voto']
+            aparcamiento_object = AparcamientoMod.objects.get(number=id)
+            comentario_object = ComentarioMod.objects.filter(aparcamiento__number = id)
+            if voto =='up':
+                aparcamiento_object.puntuacion = aparcamiento_object.puntuacion + 1
+            elif voto =='down':
+                aparcamiento_object.puntuacion = aparcamiento_object.puntuacion - 1
+            else:
+                pass
+            aparcamiento_object.save()
+            context = {
+                'color': estilo['color'],
+                'size': estilo['size'],
+                'aparcamiento': aparcamiento_object,
+                'comentarios': comentario_object,
+            }
         #crear el nuevo comentario
     return HttpResponse(template.render(context, request))
 
