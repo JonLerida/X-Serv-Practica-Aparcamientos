@@ -36,6 +36,7 @@ class Aparcamiento (models.Model):
     longitud = models.CharField(max_length=200, default='',blank = True)
     telefono = models.CharField(max_length=200, default='', blank = True)
     email = models.CharField(max_length = 200, default = '', blank = True)
+    puntuacion = models.IntegerField(default='0', blank = True)
 
     def __str__(self):
         return (self.nombre)
