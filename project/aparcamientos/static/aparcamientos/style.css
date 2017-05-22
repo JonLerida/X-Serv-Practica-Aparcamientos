@@ -338,7 +338,7 @@ a.enlace_decorado:hover{
 #info_aparcamiento ul{
     padding: 0;
     list-style-type: none;
-    margin: 0px 20px 50px 0px;
+    margin: 0px 20px 15px 0px;
     padding: 0;
 }
 
@@ -454,4 +454,24 @@ div#enlaces_bajos{
 
 #enlaces_bajos span.right{
     position: absolute;
-    right: 0;}
+    right: 0;
+}
+
+
+div.votesBox{
+    position: relative;
+    right : 0%;
+}
+.votes, .vote {
+ display:inline-block;
+
+}
+.vote {
+ vertical-align:middle;
+}
+
+.votes span{
+    color: black;
+    clear: left;
+    font-weight: bolder;
+}
