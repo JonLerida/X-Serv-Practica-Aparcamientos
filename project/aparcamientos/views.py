@@ -246,8 +246,9 @@ def Principal(request):
     return HttpResponse(template.render(context, request))
 
 """
-Cuando recibo un LOGIN: si el método es POST, compruebo si el nick y password coinciden con la base de datos. Si lo hacen, debería autenticar al usuario, usar
-el login ese de las diapos, no se como. Si falla, no lo autentico. En cualquier caso, aunque el método sea invalido, redireccion a la pagina principal
+Cuando recibo un LOGIN: si el método es POST, compruebo si el nick y password coinciden con la base de datos.
+Si falla, no lo autentico. En cualquier caso,
+aunque el método sea invalido, redireccion a la pagina principal
 """
 @csrf_exempt
 def Login(request):
@@ -260,7 +261,9 @@ def Login(request):
         pass
         return redirect('/registro/') #call the login view
     return redirect('/')
-
+"""
+Método para crear nuevos usuarios. Comprueba que el introducido no exista
+"""
 def Registro(request):
     template = loader.get_template("registro.html")
     [pagina_object, user_object] = Get_UserPages_Names(PaginaMod.objects.all(), UserMod.objects.all())
@@ -280,8 +283,8 @@ def Registro(request):
         new_password =request.POST.get('password', None)
         user, created = UserMod.objects.get_or_create(username=new_usuario, is_staff = True)
         if created:
-            user.set_password(new_password) # This line will hash the password
-            user.save() #DO NOT FORGET THIS LINE
+            user.set_password(new_password) # Para hashear la contraseña y que no se vea
+            user.save()
             user = authenticate(username=new_usuario, password=new_password)
             login(request, user)
             title = 'Usuario creado con éxito'
@@ -309,14 +312,12 @@ def Registro(request):
 
 """
 Página de un usuario determinado: mostrar aparcamientos seleccionados por ese usuario, de 5 en 5
-Comprobar si el usuario existe. Si existe, comprobar si tiene un estilo asociado. Si lo tiene, devolverle el estilo. Si no, le ponemos el
-estandar (negro,1em)
+Comprobar si el usuario existe.
 """
 def Profile(request, usuario):
     estilo = Get_Style(request)
     try:
         offset = request.GET['offset']  #Si no ponemos nada de offset, es como si fuese 0.
-        print(offset)
     except KeyError:
         offset = 0
     if request.method=='GET':
@@ -324,15 +325,17 @@ def Profile(request, usuario):
         try:
             usuario_object = UserMod.objects.get(username=usuario)
             offset = int(offset)
-            interval = [offset*5, (offset+1)*5]
+            interval = [offset*5, (offset+1)*5] # [0-5] por ejemplo. Al pasar los índices se considera de 0 a 4
             start = interval[0]
             end = interval[1]
             guardado_object = GuardadoMod.objects.filter(usuario__username = usuario)[start:end] #sus aparcamientos
             prev = False                            # Variables para no tener los enlaces cuando no haya más aparcamientos
             next = False
             if guardado_object.count() == 5:
+                #hay más aparcamientos
                 next = True
             if offset != 0:
+                # no es la primera página
                 prev = True
 
             context = {

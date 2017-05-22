@@ -28,7 +28,7 @@ urlpatterns = [
     #página about
     url(r'^about$', "aparcamientos.views.About", name='About'),
     #registrate
-    url(r'registrate/$', "aparcamientos.views.Registrate", name='registrarse'),
+    url(r'registro/$', "aparcamientos.views.Registro", name='registrarse'),
     #Login
     url(r'^login/$', "aparcamientos.views.Login", name='Login de un usuario'),
     #logout
