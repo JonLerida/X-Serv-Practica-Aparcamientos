@@ -1,0 +1,71 @@
+{% load staticfiles %}
+<!-- Plantilla base del sitio web. Esto tendría qe salir en todas las páginas. Banner, formulario login, barra lateral/vertical...-->
+<link rel="stylesheet" type="text/css" href="{% static 'aparcamientos/style.css'%}"/>
+<!DOCTYPE html>
+<html>
+<title>Aparcamientos</title>
+<link rel="shortcut icon" href='{% static "aparcamientos/images/icono.ico" %}'/>
+<head>
+{% if redireccion %}
+<meta http-equiv="refresh"
+content="1; url=/"><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{% endif %}
+</head>
+<body>
+<img class="banner" src='{% static "aparcamientos/images/banner.jpg" %}' alt="banner">
+
+<!--dimensiones originales de la foto son 1400x900, factor de 1.42-->
+{% if user_color %}
+<style>
+  body{
+    background-color: {{ user_color }};
+    font-size: {{user_size}}%;
+  }
+</style>
+{% endif %}
+<!-- Formulario de Login-->
+
+<h1>{{title}}</h1>
+<h2>{{title2}}</h2>
+
+<!-- Aqui habria que meter un algo para que si ya está registrado, no muestre el formulario-->
+<!-- Esto forma parte de la base porque lo utilizan todas-->
+    <form id="login_form" action="" method ="POST">
+        {% csrf_token %}
+        <label for="id_username"><span class="login_fields">Nick: </span></label> <input id="id_username"name="username" type="text"/>
+        <label for="id_password"><span class="login_fields">Contraseña: </span></label> <input id="id_password" name="password" type="password" />
+        <button type="submit">Crear!</button>
+    </form>
+
+<ul class="list_horizontal">
+  <li><a class="active" href="/">Inicio</a></li>
+  <li><a href="/aparcamientos">Aparcamientos</a></li>
+  <li style="float:right"><a href="/about">About</a></li>
+</ul>
+<br>
+<!--Lisa Vertical-->
+<ul class="list_vertical">
+    {% for pagina in paginas %}
+    <li><a href="/{{pagina.usuario}}">{{pagina.nombre}}</a></li>
+    {% endfor %}
+    {% for usuario in users %}
+    <li><a href="{{usuario.username}}">Página de {{usuario.username}}</a></li>
+    {% endfor %}
+</ul>
+
+
+{% block texto_central %} {% endblock texto_central %}
+
+
+<br><br>
+
+
+<footer class="piepagina">
+    <p>Esta aplicación utiliza datos del portal de datos abiertos de la ciudad de Madrid</p>
+    <a class="piepagina" href="https://goo.gl/kfwrqc">Página al XML</a>
+    <a class="piepagina" href="https://goo.gl/KesL9h">Descripción del XML</a>
+</footer>
+
+
+</body>
+</html>

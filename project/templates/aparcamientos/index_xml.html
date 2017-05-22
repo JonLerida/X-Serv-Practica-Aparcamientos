@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Contenidos>
+    <informacion>
+        <titulo>Documento XML para la página principal de Aparcamientos</titulo>
+        <uri>http://localhost:8080</uri>
+    </informacion>
+    <paginas-personales>
+    {% for usuario in pagina_object %}
+        <usuario>
+            <atributo nombre="USUARIO">{{usuario.usuario}}</atributo>
+            <atributo nombre="PAGINA">{{usuario.nombre}}</atributo>
+            <atributo nombre="URI">
+            {{usuario.enlace}}
+            </atributo>
+        </usuario>
+    {% endfor %}
+    {% for usuario in usuario_object %}
+        <usuario>
+            <atributo nombre="USUARIO">{{usuario.username}}</atributo>
+            <atributo nombre="PAGINA"> Página de {{usuario.username}}</atributo>
+            <atributo nombre="URI">
+            http://localhost:8080/{{usuario.username}}
+            </atributo>
+        </usuario>
+    {% endfor %}
+    </paginas-personales>
+    {% for park in aparcamiento_object %}
+    <aparcamientos>
+        <atributos idioma="es">
+            <atributo nombre="ID-ENTIDAD">{{park.number}}</atributo>
+            <atributo nombre="NOMBRE">{{park.nombre}}</atributo>
+            <atributo nombre="DESCRIPCION">
+            {{park.aparcamiento.descripcion}}
+            </atributo>
+            <atributo nombre="ACCESIBILIDAD">{{park..accesbilidad}}</atributo>
+            <atributo nombre="CONTENT-URL">
+            {{park.aparcamiento.url}}
+            </atributo>
+            <atributo nombre="LOCALIZACION">
+                <atributo nombre="NOMBRE-VIA">{{park.via}}</atributo>
+                <atributo nombre="LOCALIDAD">{{park.localidad}}</atributo>
+                <atributo nombre="PROVINCIA">{{park.provincia}}</atributo>
+                <atributo nombre="CODIGO-POSTAL">{{park.codigo_postal}}</atributo>
+                <atributo nombre="BARRIO">{{park.barrio}}</atributo>
+                <atributo nombre="DISTRITO">{{park.distrito}}</atributo>
+                <atributo nombre="LATITUD">{{park.latitud}}</atributo>
+                <atributo nombre="LONGITUD">{{park.longitud}}</atributo>
+                <atributo nombre="PUNTUACION">{{park.puntuacion}}</atributo>
+            </atributo>
+            <atributo nombre="DATOSCONTACTOS">
+                <atributo nombre="TELEFONO">{{park.telefono}}</atributo>
+                <atributo nombre="EMAIL">{{park.email}}</atributo>
+            </atributo>
+            <atributo nombre="TIPO">/contenido/entidadesYorganismos/AparcamientosResidentes</atributo>
+        </atributos>
+    </aparcamientos>
+    {% endfor %}
+    <footer>
+        <informacion>Esta aplicación utiliza datos del portal de datos abiertos de la ciudad de Madrid</informacion>
+        <contenido>
+            <atributo nombre="XML-URI">
+                https://goo.gl/kfwrqc
+            </atributo>
+            <atributo nombre ="DESCRIPCION-XML-URI">
+                https://goo.gl/KesL9h
+            </atributo>
+        </contenido>
+    </footer>
+</Contenidos>
