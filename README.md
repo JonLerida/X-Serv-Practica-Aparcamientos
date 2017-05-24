@@ -3,10 +3,10 @@ Repositorio de inicio de la práctica final - Curso 2016/2017
 
 
 
-**Nombre y titulación:** Jon Lérida García. Ingeniería en Sistemas de Telecomunicaciones
-**Nombre de su cuenta en el laboratorio del alumno:**jlerida
-**Nombre de usuario en GitHub:**JonLerida
-**Resumen de las peculiaridades que se quieran mencionar sobre lo implementado en la parte obligatoria:**
+**Nombre y titulación:** Jon Lérida García. Ingeniería en Sistemas de Telecomunicaciones  
+**Nombre de su cuenta en el laboratorio del alumno:**jlerida  
+**Nombre de usuario en GitHub:**JonLerida  
+**Resumen de las peculiaridades que se quieran mencionar sobre lo implementado en la parte obligatoria:**  
 
 **Lista de funcionalidades opcionales que se hayan implementado, y breve descripción de cada una:**
 * Uso de HTML5 en los formularios de elección de color de fondo y del tamaño de la fuente. Formularios tipo 'color' y 'number'.
@@ -15,7 +15,7 @@ Repositorio de inicio de la práctica final - Curso 2016/2017
 * Canal XML de la página principal, con los usuarios creados y los cinco aparcamientos más comentados.
 * Funcionalidad de registro de usuarios. Bloqueando el registro si el usuario elegido ya existe o no se ha introducido nada. El servidor te mantiene logeado en esa cuenta tras registrarte.
 * Sistema de puntuación en las páginas de los aparcamientos. Permite positiva y negativa.
-[URL parte obligatoria](https://www.youtube.com/watch?v=MinzfZc95lE "Obligatoria")
-[URL parte opcional](https://www.youtube.com/watch?v=U4IEZzSb1NI "opcional")
+[URL parte obligatoria](https://www.youtube.com/watch?v=MinzfZc95lE "Obligatoria")  
+[URL parte opcional](https://www.youtube.com/watch?v=U4IEZzSb1NI "opcional")  
 
 *Nota importante: Lanzar el servidor en el puerto 8080*
