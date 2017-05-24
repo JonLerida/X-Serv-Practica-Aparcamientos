@@ -1,8 +1,7 @@
 # X-Serv-Practica-Aparcamientos
 Repositorio de inicio de la práctica final - Curso 2016/2017
 
-[URL parte obligatoria](https://www.youtube.com/watch?v=MinzfZc95lE "Obligatoria")
-[URL parte opcional](https://www.youtube.com/watch?v=U4IEZzSb1NI "opcional")
+
 
 
 **Nombre y titulación:** Jon Lérida García. Ingeniería en Sistemas de Telecomunicaciones
@@ -19,3 +18,5 @@ Repositorio de inicio de la práctica final - Curso 2016/2017
 ⋅⋅* Sistema de puntuación en las páginas de los aparcamientos. Permite positiva y negativa.
 [URL parte obligatoria](https://www.youtube.com/watch?v=MinzfZc95lE "Obligatoria")
 [URL parte opcional](https://www.youtube.com/watch?v=U4IEZzSb1NI "opcional")
+
+*Nota importante: Lanzar el servidor en el puerto 8080*
