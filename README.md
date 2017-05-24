@@ -4,12 +4,12 @@ Repositorio de inicio de la práctica final - Curso 2016/2017
 
 
 
-**Nombre y titulación:** Jon Lérida García. Ingeniería en Sistemas de Telecomunicaciones
-**Nombre de su cuenta en el laboratorio del alumno:**jlerida
-**Nombre de usuario en GitHub:**JonLerida
-**Resumen de las peculiaridades que se quieran mencionar sobre lo implementado en la parte obligatoria:**
+**Nombre y titulación:** Jon Lérida García. Ingeniería en Sistemas de Telecomunicaciones  
+**Nombre de su cuenta en el laboratorio del alumno:**jlerida  
+**Nombre de usuario en GitHub:**JonLerida  
+**Resumen de las peculiaridades que se quieran mencionar sobre lo implementado en la parte obligatoria:**  
 
-**Lista de funcionalidades opcionales que se hayan implementado, y breve descripción de cada una:**
+**Lista de funcionalidades opcionales que se hayan implementado, y breve descripción de cada una:**  
 ⋅⋅* Uso de HTML5 en los formularios de elección de color de fondo y del tamaño de la fuente. Formularios tipo 'color' y 'number'.
 ⋅⋅* Favicon en todos los recursos del sitio.
 ⋅⋅* Comentarios no anónimos.
