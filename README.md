@@ -4,8 +4,8 @@ Repositorio de inicio de la práctica final - Curso 2016/2017
 
 
 **Nombre y titulación:** Jon Lérida García. Ingeniería en Sistemas de Telecomunicaciones  
-**Nombre de su cuenta en el laboratorio del alumno:**jlerida  
-**Nombre de usuario en GitHub:**JonLerida  
+**Nombre de su cuenta en el laboratorio del alumno:** jlerida  
+**Nombre de usuario en GitHub:** JonLerida  
 **Resumen de las peculiaridades que se quieran mencionar sobre lo implementado en la parte obligatoria:**  
 
 **Lista de funcionalidades opcionales que se hayan implementado, y breve descripción de cada una:**  
