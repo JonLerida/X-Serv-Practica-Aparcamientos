@@ -19,7 +19,7 @@ Repositorio de inicio de la práctica final - Curso 2016/2017
 [URL parte obligatoria](https://www.youtube.com/watch?v=MinzfZc95lE "Obligatoria")
 [URL parte opcional](https://www.youtube.com/watch?v=U4IEZzSb1NI "opcional")
 
-*Nota importante: Lanzar el servidor en el puerto 8080*
+*Nota importante: Lanzar el servidor en el puerto 8080*  
 *Nota importante2: Si sale un mensaje de alerta por migraciones sin aplicar, ejecutar $python3 manage.py migrate --fake aparcamientos  
 la práctica debería ir igualmente bien sin eso.*
 
