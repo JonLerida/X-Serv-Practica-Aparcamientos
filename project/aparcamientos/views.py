@@ -559,6 +559,8 @@ def add_park(request):
     )
     message = 'Tu lista ha sido actualizada: has añadido el nº'+park_number
     context = {
+        'color': estilo['color'],
+        'size': estilo['size'],
         'title': message,
     }
     return HttpResponse(template.render(context, request))
