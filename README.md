@@ -9,12 +9,12 @@ Repositorio de inicio de la práctica final - Curso 2016/2017
 **Resumen de las peculiaridades que se quieran mencionar sobre lo implementado en la parte obligatoria:**  
 
 **Lista de funcionalidades opcionales que se hayan implementado, y breve descripción de cada una:**  
-⋅⋅* Uso de HTML5 en los formularios de elección de color de fondo y del tamaño de la fuente. Formularios tipo 'color' y 'number'.
-⋅⋅* Favicon en todos los recursos del sitio.
-⋅⋅* Comentarios no anónimos.
-⋅⋅* Canal XML de la página principal, con los usuarios creados y los cinco aparcamientos más comentados.
-⋅⋅* Funcionalidad de registro de usuarios. Bloqueando el registro si el usuario elegido ya existe o no se ha introducido nada. El servidor te mantiene logeado en esa cuenta tras registrarte.
-⋅⋅* Sistema de puntuación en las páginas de los aparcamientos. Permite positiva y negativa.
+* Uso de HTML5 en los formularios de elección de color de fondo y del tamaño de la fuente. Formularios tipo 'color' y 'number'.
+* Favicon en todos los recursos del sitio.
+* Comentarios no anónimos.
+* Canal XML de la página principal, con los usuarios creados y los cinco aparcamientos más comentados.
+* Funcionalidad de registro de usuarios. Bloqueando el registro si el usuario elegido ya existe o no se ha introducido nada. El servidor te mantiene logeado en esa cuenta tras registrarte.
+* Sistema de puntuación en las páginas de los aparcamientos. Permite positiva y negativa.
 
 [URL parte obligatoria](https://www.youtube.com/watch?v=MinzfZc95lE "Obligatoria")
 [URL parte opcional](https://www.youtube.com/watch?v=U4IEZzSb1NI "opcional")
